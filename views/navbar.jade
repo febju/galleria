@@ -1,0 +1,51 @@
+nav(class="navbar navbar-default")
+		div(class="container-fluid")
+			div(class="navbar-header")
+				a(class="navbar-brand", href="/galleria", marked="1") Galleria
+			div(class="collapse navbar-collapse", id="bs-example-navbar-collapse-1")
+				ul(class="nav navbar-nav")
+					li(class="dropdown")
+						a(href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Mediat
+							span(class="caret")
+						ul(class="dropdown-menu")
+							li
+								a(href="/galleria/media") Kaikki mediat
+							li(role="separator", class="divider")
+							li
+								a(href="/galleria/media/kuvat") Kuvat
+							li(role="separator", class="divider")
+							li
+								a(href="/galleria/media/videot") Videot
+							//li(role="separator", class="divider")
+							//li
+							//	a(href="/galleria/media/aanet") Äänet
+					li
+						a(href="/galleria/media/haku") Haku
+					if (user)
+						li
+							a(href="/galleria/media/lisaa") Lisää
+					//li
+					//	a(href="#") Keskustelualue
+					//li
+					//	a(href="#") Käyttäjät
+				ul(class="nav navbar-nav navbar-right")
+					if (!user)
+						if url === "/login" || url === "/register"
+							li
+								a(class="login-info") Ei kirjautunut
+						else
+							form(class="navbar-form", role="form", action="/galleria/user/login", method="post")
+								a(class="btn btn-default btn-login", href="/galleria/user/register")
+									i.fa.fa-user-plus
+								div(class="form-group")
+									input(name="username", type="text", class="form-control input-navbar-login", placeholder="Username")
+									input(name="password", type="password", class="form-control input-navbar-login", placeholder="Password")
+									button(type="submit", class="btn btn-default btn-login")
+										i.fa.fa-sign-in
+					if (user)
+						li
+							a(class="login-info") #{user}
+						li
+							form(class="navbar-form", role="form", action="/galleria/logout", method="get")
+								button(type="submit", class="btn btn-default btn-logout")
+									i.fa.fa-sign-out

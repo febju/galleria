@@ -1,0 +1,11 @@
+extends ../layout
+block content
+	h2(style="text-align:center")= title
+	form(class="form-user" role="form", action="/galleria/user/login", method="post")
+		input(name="username", type="text", class="form-control input-user", placeholder="Username")
+		input(name="password", type="password", class="form-control input-user", placeholder="Password")
+		button(type="submit", class="btn btn-default btn-form-user") Kirjaudu sisään
+		br
+		a(class="reset-password" , href="/galleria/user/forgot") Unohdin salasanani
+		br
+		a(class="btn btn-default btn-form-user", href="/galleria/user/register") Luo uusi käyttäjä

@@ -1,0 +1,8 @@
+/bower_components
+/node_modules
+
+/views/users
+
+/public/redact
+
+npm-debug.log

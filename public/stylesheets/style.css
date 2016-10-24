@@ -1,0 +1,72 @@
+body {
+	padding: 30px;
+	font-family: "Lato", sans-serif;
+}
+
+h1 {
+	font-size: 400%;
+}
+
+p {
+	font-size: 300%;
+	color: gray;
+}
+
+a {
+	font-size: 150%;
+	color: #00B7FF;
+}
+
+.navbar-default .navbar-brand {
+	font-family: "Lobster";
+	font-size: 36px;
+	color: black;
+}
+
+.input-navbar-login{
+	margin-right: 5px;
+	margin-left: 5px;
+	max-width: 90px;
+}
+
+.btn-login{
+	margin-right: 5px;
+	margin-left: 5px;
+	max-width: 90px;
+}
+
+.btn-logout{
+	margin-right: 5px;
+	margin-left: 10px;
+	max-width: 90px;
+}
+
+.login-info{
+	font-size: 150%;
+	color: black;
+}
+
+.form-user{
+	margin-left: auto;
+    margin-right: auto;
+	text-align: center;
+	max-width: 30%;
+}
+
+.input-user{
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.btn-form-user{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	max-width: 180px;
+}
+
+.reset-password{
+	font-size: 100%;
+	color: black;
+}
