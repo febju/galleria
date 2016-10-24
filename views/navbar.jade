@@ -30,7 +30,7 @@ nav(class="navbar navbar-default")
 					//	a(href="#") Käyttäjät
 				ul(class="nav navbar-nav navbar-right")
 					if (!user)
-						if url === "/login" || url === "/register"
+						if url === "/user/login" || url === "/user/register" || url ==="/user/forgot" || url==="/user/reset"
 							li
 								a(class="login-info") Ei kirjautunut
 						else

@@ -200,7 +200,7 @@ router.get('/reset', function(req, res) {
 					req.session.token = token.token;
 					res.render('user/reset', {
 						title : 'Salasanan resetointi',
-						url: req.originalUrl,
+						url: (req.originalUrl).split("?")[0]
 					});
 				}
 				else {
