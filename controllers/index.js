@@ -1,21 +1,37 @@
 var express = require('express');
 var router = express.Router();
 
+/*
+ *	/	GET
+ *
+ *
+ *
+ *
+ */
 router.get('/', function (req, res) {
-	//req.flash('info','ebin');
+	//req.flash('success','ebin');
+	//req.flash('error','fail');
 	//console.log(req.session.user);
-    res.render('index', {
+    res.render('index', {								//Näytetään etusivu
 		title : 'Galleria',
 		user: req.session.user,
 		url: req.originalUrl,
-		//messages: req.flash('info')
+		//messages: req.flash()
 	});
 });
 
+/*
+ *	/LOGOUT	GET
+ *
+ *
+ *
+ *
+ */
 router.get('/logout', function(req, res) {
+	console.log('Logging out: ' + req.session.user);
     req.session.destroy();
-	//req.flash('info','ebin');
-    res.render('index', {
+	//message(kirjauduttu ulos käyttäjältä x)
+    res.render('index', {									//Näytetään etusivu
 		title : 'Galleria',
 		user: req.session.user,
 		url: req.originalUrl,

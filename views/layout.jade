@@ -28,6 +28,9 @@ html
 	
 	body
 		//flash-messages 101:
-		//-if(messages)
-			//div#note #{messages}
+		//if(flash)
+		//	if(flash.success)
+		//		div(id="messages", class="success") #{flash.success}
+		//	if(flash.error)
+		//		div(id="messages", class="error") #{flash.error}
 	block content
