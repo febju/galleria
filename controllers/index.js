@@ -33,7 +33,6 @@ router.get('/logout', function(req, res) {
 	//message(kirjauduttu ulos käyttäjältä x)
     res.render('index', {									//Näytetään etusivu
 		title : 'Galleria',
-		user: req.session.user,
 		url: req.originalUrl,
 		//messages: req.flash('info')
 	});

@@ -3,5 +3,8 @@ extends ../layout
 block content
 		h2(style="text-align:center")= title
 		form(class="form-user", role="form", action="/galleria/user/forgot", method="post")
-			input(class="form-control input-user", type="text", name="username", placeholder="Käyttäjä")
+			div(class="input-group bottom-buffer")
+				span(class="input-group-addon")
+					i(class="fa fa-user fa-fw", aria-hidden="true")
+				input(class="form-control", type="text", name="username", placeholder="Käyttäjä", required="true")
 			button(class="btn btn-default btn-form-user", type="submit") Lähetä linkki sähköpostiin

@@ -1,8 +1,10 @@
-nav(class="navbar navbar-default")
+nav(class="navbar navbar-default", role="navigation")
 		div(class="container-fluid")
 			div(class="navbar-header")
+				button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#galleria-navbar-collapse", aria-expanded="false")
+					i(class="glyphicon glyphicon-triangle-bottom navbar-icon")
 				a(class="navbar-brand", href="/galleria", marked="1") Galleria
-			div(class="collapse navbar-collapse", id="bs-example-navbar-collapse-1")
+			div(class="collapse navbar-collapse", id="galleria-navbar-collapse")
 				ul(class="nav navbar-nav")
 					li(class="dropdown")
 						a(href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Mediat
@@ -35,17 +37,28 @@ nav(class="navbar navbar-default")
 								a(class="login-info") Ei kirjautunut
 						else
 							form(class="navbar-form", role="form", action="/galleria/user/login", method="post")
-								a(class="btn btn-default btn-login", href="/galleria/user/register")
-									i.fa.fa-user-plus
+								a(class="btn btn-info btn-navbar-icon btn-navbar-left", id="navbar-btn-help", href="/galleria/user/login")
+									i(class="fa fa-question navbar-icon")
+								a(class="btn btn-primary btn-navbar-icon btn-navbar-left", id="navbar-btn-register", href="/galleria/user/register")
+									i(class="fa fa-user-plus navbar-icon")
 								div(class="form-group")
-									input(name="username", type="text", class="form-control input-navbar-login", placeholder="Username")
-									input(name="password", type="password", class="form-control input-navbar-login", placeholder="Password")
-									button(type="submit", class="btn btn-default btn-login")
-										i.fa.fa-sign-in
+									div(class="input-group input-navbar")
+										span(class="input-group-addon")
+											i(class="fa fa-user fa-fw", aria-hidden="true")
+										input(class="form-control input-navbar-login", type="text", name="username", placeholder="Käyttäjä", required="true")
+									//input(name="username", type="text", class="form-control input-navbar-login", placeholder="Username")
+									div(class="input-group input-navbar")
+										span(class="input-group-addon")
+											i(class="fa fa-key fa-fw", aria-hidden="true")
+										input(class="form-control input-navbar-login", type="password", name="password", placeholder="Salasana", required="true")
+									//input(name="password", type="password", class="form-control input-navbar-login", placeholder="Password")
+									//div(class="navbar-bottom-form")
+									button(type="submit", class="btn btn-success btn-navbar-icon btn-navbar-right", id="navbar-btn-login")
+										i(class="fa fa-sign-in navbar-icon")
 					if (user)
 						li
 							a(class="login-info") #{user}
 						li
-							form(class="navbar-form", role="form", action="/galleria/logout", method="get")
-								button(type="submit", class="btn btn-default btn-logout")
-									i.fa.fa-sign-out
+							form(class="navbar-form navbar-bottom-form", role="form", action="/galleria/logout", method="get")
+								button(type="submit", class="btn btn-danger btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
+									i(class="fa fa-sign-out navbar-icon")

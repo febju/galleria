@@ -53,7 +53,6 @@ router.post('/register', function(req, res) {
 
 	var salt = bcrypt.genSaltSync(16);
 	var password = bcrypt.hashSync(userpassword,salt);
-	console.log(password);
 	console.log('Creating new user: ' + username + ' with password: ' + password);
     mongoose.model('User').create({						//Lisätään käyttäjä tietokantaan
 		username: username,
@@ -336,7 +335,7 @@ router.post('/reset', function(req, res) {
 					else {
 						console.log('Password for user: ' + modified_user + ' updated');
 						mongoose.model('Token').find({ token: token.token,type: token.type }).remove().exec();
-						console.log('Token : ' + token.token + ' deleted');
+						console.log('Token: ' + token.token + ' deleted');
 						req.session.destroy();
 						//message(käyttäjän x salasana resetoitu)
 						res.redirect('/galleria/user/login');
