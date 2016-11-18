@@ -56,9 +56,9 @@ nav(class="navbar navbar-default", role="navigation")
 									button(type="submit", class="btn btn-success btn-navbar-icon btn-navbar-right", id="navbar-btn-login")
 										i(class="fa fa-sign-in navbar-icon")
 					if (user)
-						li
-							a(class="login-info") #{user}
-						li
-							form(class="navbar-bottom-form", role="form", action="/galleria/logout", method="get")
-								button(type="submit", class="btn btn-danger btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
-									i(class="fa fa-sign-out navbar-icon")
+							li
+								a(class="login-info") #{user}
+							li
+								form(class="navbar-form", role="form", action="/galleria/logout", method="get")
+									button(type="submit", class="btn btn-danger btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
+										i(class="fa fa-sign-out navbar-icon")

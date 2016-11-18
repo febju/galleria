@@ -9,9 +9,6 @@ var router = express.Router();
  *
  */
 router.get('/', function (req, res) {
-	req.flash('success','ebin');
-	//req.flash('error','fail');
-	//console.log(req.session.user);
     res.render('index', {								//Näytetään etusivu
 		title : 'Galleria',
 		user: req.session.user,
