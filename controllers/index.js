@@ -9,14 +9,14 @@ var router = express.Router();
  *
  */
 router.get('/', function (req, res) {
-	//req.flash('success','ebin');
+	req.flash('success','ebin');
 	//req.flash('error','fail');
 	//console.log(req.session.user);
     res.render('index', {								//Näytetään etusivu
 		title : 'Galleria',
 		user: req.session.user,
 		url: req.originalUrl,
-		//messages: req.flash()
+		messages: req.flash()
 	});
 });
 
@@ -31,11 +31,7 @@ router.get('/logout', function(req, res) {
 	console.log('Logging out: ' + req.session.user);
     req.session.destroy();
 	//message(kirjauduttu ulos käyttäjältä x)
-    res.render('index', {									//Näytetään etusivu
-		title : 'Galleria',
-		url: req.originalUrl,
-		//messages: req.flash('info')
-	});
+    res.redirect('/galleria');							//Ohjataan etusivulle
 });
 
 module.exports = router;

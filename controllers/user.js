@@ -31,7 +31,8 @@ router.get('/register', function(req, res) {
 	else {
 		res.render('user/register', {			//Näytetään rekisteröitymissivu
 			title: 'Rekisteröityminen',
-			url: req.originalUrl
+			url: req.originalUrl,
+			messages: req.flash()
 		});
 	}
 });
@@ -71,12 +72,12 @@ router.post('/register', function(req, res) {
 		else {											//Käyttäjä lisättiin tietokantaan onnistuneesti
 			req.session.user = username;
 			console.log('User ' + username + ' created succesfully');
-			req.flash('success','Uusi käyttäjä rekisteröity onnistuneesti');
-			res.locals.messages = req.flash('success');
+			req.flash('success','Uusi käyttäjä luotu onnistuneesti');
 			res.render('index', {
 				title : 'Tervetuloa galleriaan',
 				user: req.session.user,
-				url: req.originalUrl
+				url: req.originalUrl,
+				messages: req.flash()
 			});
 		}
 	})
@@ -98,7 +99,8 @@ router.get('/login', function(req, res) {
 	else {										//Näytetään kirjautumissivu käyttäjälle
 		res.render('user/login', {
 			title : 'Sisäänkirjautuminen',
-			url: req.originalUrl
+			url: req.originalUrl,
+			messages: req.flash()
 		});
 	}
 });
@@ -126,7 +128,7 @@ router.post('/login', function(req, res) {
 		else {														//Käyttäjä löytyi tietokannasta, joten verrataan syötettyä salasanaa tallennettuun salasanaan
 			if(user == null) {
 				console.log('User: ' + username + ' does not exist');
-				//message(väärä käyttäjätunnus)
+				req.flash('error','Sisäänkirjatuminen epäonnistui. Tarkista tunnuksesi.');
 				res.redirect('/galleria/user/login');
 			}
 			else {
@@ -135,13 +137,13 @@ router.post('/login', function(req, res) {
 				var login = bcrypt.compareSync(password, hash);
 				if (login == true) {									//Salasanat vastasivat toisiaan
 					console.log('User: ' + username + ' logged in succesfully');
-					//message(Sisäänkirjautuminen onnistui)
 					req.session.user = username;
+					req.flash('success','Sisäänkirjautuminen onnistui');
 					res.redirect(req.get('referer'));
 				}
 				else {													//Salasanat eivät vastanneet toisiaan
 					console.log('Wrong password for: ' + username);
-					//message(väärä salasana)
+					req.flash('error','Sisäänkirjatuminen epäonnistui. Tarkista tunnuksesi.');
 					res.redirect('/galleria/user/login');
 				}
 			}
@@ -165,7 +167,8 @@ router.get('/forgot', function(req, res) {
 	else {											//Näytetään salasanan resetointilinkin tilaussivu
 		res.render('user/forgot', {
 			title : 'Unohdin salasanani',
-			url: req.originalUrl
+			url: req.originalUrl,
+			messages: req.flash()
 		});
 	}
 });
@@ -195,7 +198,7 @@ router.post('/forgot', function(req, res) {
 		else {																									//Käyttäjä löytyi, joten valmistellaan sähköpostin lähetys ja luodaan linkki resetointisivua varten
 			if (user == null) {
 				console.log('User: ' + username + ' does not exist');
-				//message(Käyttäjää ei ole olemassa. Tarkista käyttäjän nimi.)
+				req.flash('error',"Käyttäjää '"+username+"' ei ole olemassa.");
 				res.redirect('/galleria/user/forgot');
 			}
 			else {
@@ -241,7 +244,7 @@ router.post('/forgot', function(req, res) {
 							}
 							else {																					//Sähköposti lähetettiin onnistuneesti
 								console.log('Email to ' + email + ' sent succesfully')
-								//message(Sähköpostiisi on nyt lähetetty salasanan resetointilinkki. Tarkista sähköpostisi)
+								req.flash('success','Salasanan resetointi linkki on lähetetty sähköpostiisi. Käy tarkistamassa sähköpostisi.');
 								res.redirect('/galleria');
 							}
 						});
@@ -279,7 +282,7 @@ router.get('/reset', function(req, res) {
 			else {												//Avain löytyi
 				if (token == null) {
 					console.log('Token: ' + token_id + ' does not exist');
-					//message(Linkkiä ei ole tai se on vanhentunut. Ole hyvä ja tilaa uusi linkki.)
+					req.flash('error','Resetointi linkki on vanhentunut.');
 					res.redirect('/galleria/user/forgot');		//Ohjataan käyttäjä uuden linkin tilaussivulle
 				}
 				else {
@@ -287,7 +290,8 @@ router.get('/reset', function(req, res) {
 					req.session.token = token;			
 					res.render('user/reset', {					//Näytetään resetointi sivu
 						title : 'Salasanan resetointi',
-						url: (req.originalUrl).split("?")[0]
+						url: (req.originalUrl).split("?")[0],
+						messages: req.flash()
 					});
 				}
 			}
@@ -317,7 +321,7 @@ router.post('/reset', function(req, res) {
 		else {
 			if (user == null) {
 				console.log('Did not find owner of token');
-				//message(Avaimen omistaja ei löytynyt)
+				//message(Avaimen omistaja ei löytynyt) ???
 			}
 			else {
 				console.log('Found owner of token: ' + user.username);
@@ -337,7 +341,7 @@ router.post('/reset', function(req, res) {
 						mongoose.model('Token').find({ token: token.token,type: token.type }).remove().exec();
 						console.log('Token: ' + token.token + ' deleted');
 						req.session.destroy();
-						//message(käyttäjän x salasana resetoitu)
+						req.flash('success','Salasana resetoitu onnistuneesti.');
 						res.redirect('/galleria/user/login');
 					}
 				});

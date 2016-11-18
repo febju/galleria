@@ -3,7 +3,7 @@ html
 	head
 	
 	meta(charset="utf-8")
-	//meta(name="viewport", content="width=device-width, initial-scale=1.0")
+	meta(name="viewport", content="width=device-width, initial-scale=1.0")
 	
 	//fonts
 	link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato")
@@ -29,9 +29,15 @@ html
 	
 	body
 		//flash-messages 101:
-		//if(flash)
-		//	if(flash.success)
-		//		div(id="messages", class="success") #{flash.success}
-		//	if(flash.error)
-		//		div(id="messages", class="error") #{flash.error}
-	block content
+		- if(messages.success)
+			.message.success
+				div(class="alert alert-success")
+					a(href="#", class="close", data-dismiss="alert", aria-label="close")&times;
+					span= messages.success
+		- if(messages.error)
+			.message.error
+				div(class="alert alert-danger")
+					a(href="#", class="close", data-dismiss="alert", aria-label="close")&times;
+					span= messages.error
+	div(class="content")
+		block content

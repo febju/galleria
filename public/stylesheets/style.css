@@ -83,7 +83,23 @@ a {
 	color: #555555;
 }
 
+.form-submit{
+	max-width: 30%;
+	margin-bottom: 10px;
+}
+
+img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 @media(max-width: 768px) {
+
+	.navbar-nav {
+		margin: 0;
+		padding: 7.5px 15px;
+	}
 
 	.input-navbar-login{
 		max-width: 100%;
@@ -104,10 +120,6 @@ a {
 		width: 68px;
 	}
 	
-	.navbar-bottom-form{
-		text-align: center;
-	}
-	
 	#navbar-btn-register{
 		float:right;
 		margin-right:5%;
@@ -122,5 +134,40 @@ a {
 		width: 90%;
 		margin-right:5%;
 		margin-left:5%;
+	}
+	
+	.navbar-form {
+		border: 0px;
+	}
+	
+	.navbar-bottom-form{
+		text-align: center;
+	}
+	
+	p {
+		font-size: 150%;
+		color: gray;
+	}
+	
+	a {
+		font-size: 125%;
+		color: #00B7FF;
+	}
+	
+	h1{
+		font-size: 250%;
+	}
+	
+	img{
+		width: 100%;
+		height: auto;
+	}
+}
+
+@media(min-width: 768px) {
+	.content{
+		margin-right: auto;
+		margin-left: auto;
+		max-width: 60%;
 	}
 }
