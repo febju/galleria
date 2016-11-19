@@ -84,7 +84,7 @@ a {
 }
 
 .form-submit{
-	max-width: 30%;
+	max-width: 50%;
 	margin-bottom: 10px;
 }
 
@@ -156,6 +156,10 @@ img{
 	
 	h1{
 		font-size: 250%;
+	}
+	
+	.form-submit{
+		max-width: 100%;
 	}
 	
 	img{

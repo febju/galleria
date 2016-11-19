@@ -60,20 +60,20 @@ router.get('/haku', function(req, res) {
 	});
 });
 
-router.get('/lisaa', function(req, res) {
+router.get('/laheta', function(req, res) {
     res.render('media/submit', {
-		title: 'Lisää',
+		title: 'Lähetä tiedosto',
 		user : req.session.user,
 		url: req.originalUrl,
 		messages: req.flash()
 	});
 });
 
-router.post('/lisaa', upload.single('submission'), function(req, res) {
-	//console.log("UPLOADING:    "+req.file.filename);
+router.post('/laheta', upload.single('submission'), function(req, res) {
+	console.log("UPLOADING:    "+req.file.filename);
 	if (req.fileValidationError != null) {
 		req.flash('error','Tiedoston tyyppi ei ollut oikeanlainen.\nSallitut tiedostotyypit: .png .jpg .jpeg .bmp .gif .webm .mp3 .mp4');
-		res.redirect('/galleria/media/lisaa');
+		res.redirect('/galleria/media/laheta');
 	}
 	else {
 		req.flash('success','Tiedosto lähetetty onnistuneesti');

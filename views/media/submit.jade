@@ -1,13 +1,21 @@
 extends ../layout
 
 block content
-	h1= title
-	p #{title}
+
+	link(rel="stylesheet", href="/galleria/stylesheets/input-file.css")
+	
+	h2= title
 	form(action="/galleria/media/lisaa", method="post", enctype="multipart/form-data")
-		label(class="btn btn-default form-submit")
-			span()
-				i(class="fa fa-file-o" aria-hidden="true")  Selaa
-			input(type="file", name="submission", style="display:none;", required="true")
+		div(class="")
+			input(type="file", id="filesubmit", class="input-file", name="submission", required="true")
+			label(for="filesubmit", class="form-control form-submit")
+				span(id="filename")
+				strong()
+					i(class="fa fa-file-o" aria-hidden="true")
 		input(class="form-control form-submit", type="text", name="name", placeholder="Median nimi", required="true")
 		textarea(class="form-control form-submit", rows="6")
 		button(type="submit", class="btn btn-default") Lähetä
+	script.
+		$('#filesubmit').on( 'change', function() {
+			$("#filename").text(document.getElementById("filesubmit").value);
+		});

@@ -1,0 +1,63 @@
+.input-file {
+	width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+/*
+Koko input file kenttä
+*/
+.input-file + label {
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+}
+
+/*
+Koko input file kenttä, jos focus
+*/
+.input-file:focus + label,
+.input-file.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.input-file + label * {
+    /* pointer-events: none; */
+    /* in case of FastClick lib use */
+}
+
+.input-file + label span,
+.input-file + label strong {
+    padding: 5px 20px;
+}
+
+.input-file + label span {
+	float: left;
+	height: 100%;
+	width: 80%;
+	display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.input-file + label strong {
+	float: right;
+	height: 100%;
+	width: 20%;
+	display: inline-block;
+	text-align: center;
+	background: #E8E8E8;
+}
+
+@media screen and (max-width: 50em) {
+	.input-file + label strong {
+		display: block;
+	}
+}
