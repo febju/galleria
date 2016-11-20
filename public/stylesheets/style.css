@@ -1,6 +1,7 @@
 body {
-	padding: 30px;
 	font-family: "Lato", sans-serif;
+	background-image: url("/galleria/images/bg5.png");
+	padding-top: 70px;
 }
 
 h1 {
@@ -15,6 +16,10 @@ p {
 a {
 	font-size: 150%;
 	color: #00B7FF;
+}
+
+.navbar{
+	opacity: 0.75;
 }
 
 .navbar-default .navbar-brand {
@@ -45,11 +50,7 @@ input-group-addon.navbar{
 	margin-right: 10px;
 }
 
-.btn-navbar-right{
-	
-}
-
-.login-info{
+.login-name{
 	font-size: 150%;
 	color: black;
 }
@@ -102,10 +103,27 @@ img{
 	margin-right: auto;
 }
 
+#content {
+	position: relative;
+	height: auto !important;
+	height: 100%;
+    min-height: calc(100vh - 186px);
+	/* Negative indent footer by its height */
+	background-color: #ffffff;
+}
+
+.footer {
+	margin-top: 20px;
+	height: 94px;
+	width: 100%;
+	background-color: #ffffff;
+	opacity: 0.75;
+}
+
 @media(max-width: 768px) {
 
 	.navbar-nav {
-		margin: 0;
+		margin-bottom: 0;
 		padding: 7.5px 15px;
 	}
 
@@ -170,16 +188,22 @@ img{
 		max-width: 100%;
 	}
 	
+	.navbar{
+		opacity: 1;
+	}
+	
 	img{
 		width: 100%;
 		height: auto;
 	}
+	
+	#content{
+		max-width: 90%;
+	}
 }
 
 @media(min-width: 768px) {
-	.content{
-		margin-right: auto;
-		margin-left: auto;
+	.container{
 		max-width: 60%;
 	}
 }

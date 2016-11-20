@@ -1,59 +1,59 @@
-nav(class="navbar navbar-default", role="navigation")
-		div(class="container-fluid")
-			div(class="navbar-header")
-				button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#galleria-navbar-collapse", aria-expanded="false")
-					i(class="glyphicon glyphicon-triangle-bottom navbar-icon")
-				a(class="navbar-brand", href="/galleria", marked="1") Galleria
-			div(class="collapse navbar-collapse", id="galleria-navbar-collapse")
-				ul(class="nav navbar-nav")
-					li(class="dropdown")
-						a(href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Mediat
-							span(class="caret")
-						ul(class="dropdown-menu")
-							li
-								a(href="/galleria/media") Kaikki mediat
-							li(role="separator", class="divider")
-							li
-								a(href="/galleria/media/kuvat") Kuvat
-							li(role="separator", class="divider")
-							li
-								a(href="/galleria/media/videot") Videot
-							//li(role="separator", class="divider")
-							//li
-							//	a(href="/galleria/media/aanet") Äänet
+nav(class="navbar navbar-default navbar-fixed-top", role="navigation")
+	div(class="container-fluid")
+		div(class="navbar-header")
+			button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#galleria-navbar-collapse", aria-expanded="false")
+				i(class="glyphicon glyphicon-triangle-bottom navbar-icon")
+			a(class="navbar-brand", href="/galleria", marked="1") Galleria
+		div(class="collapse navbar-collapse", id="galleria-navbar-collapse")
+			ul(class="nav navbar-nav")
+				li(class="dropdown")
+					a(href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") Mediat
+						span(class="caret")
+					ul(class="dropdown-menu")
+						li
+							a(href="/galleria/media") Kaikki mediat
+						li(role="separator", class="divider")
+						li
+							a(href="/galleria/media/kuvat") Kuvat
+						li(role="separator", class="divider")
+						li
+							a(href="/galleria/media/videot") Videot
+						//li(role="separator", class="divider")
+						//li
+						//	a(href="/galleria/media/aanet") Äänet
+				li
+					a(href="/galleria/media/haku") Haku
+				if (user)
 					li
-						a(href="/galleria/media/haku") Haku
-					if (user)
+						a(href="/galleria/media/laheta") Lisää
+				//li
+				//	a(href="#") Keskustelualue
+				//li
+				//	a(href="#") Käyttäjät
+			ul(class="nav navbar-nav navbar-right")
+				if (user)
+					li
+						a(class="login-name") #{user.username}
+					li
+						form(class="navbar-form", role="form", action="/galleria/logout", method="get")
+							button(type="submit", class="btn btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
+								i(class="fa fa-sign-out navbar-icon")
+				else
+					if url === "/user/login" || url === "/user/register" || url ==="/user/forgot" || url==="/user/reset"
 						li
-							a(href="/galleria/media/laheta") Lisää
-					//li
-					//	a(href="#") Keskustelualue
-					//li
-					//	a(href="#") Käyttäjät
-				ul(class="nav navbar-nav navbar-right")
-					if (user)
-						li
-							a(class="login-info") #{user.username}
-						li
-							form(class="navbar-form", role="form", action="/galleria/logout", method="get")
-								button(type="submit", class="btn btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
-									i(class="fa fa-sign-out navbar-icon")
+							a(class="login-name") Ei kirjautunut
 					else
-						if url === "/user/login" || url === "/user/register" || url ==="/user/forgot" || url==="/user/reset"
-							li
-								a(class="login-info") Ei kirjautunut
-						else
-							form(class="navbar-form", role="form", action="/galleria/login", method="post")
-								a(class="btn btn-navbar-icon btn-navbar-left", id="navbar-btn-help", href="/galleria/user/login")
-									i(class="fa fa-question navbar-icon")
-								div(class="form-group")
-									div(class="input-group input-navbar")
-										span(class="input-group-addon")
-											i(class="fa fa-user fa-fw navbar-icon", aria-hidden="true")
-										input(class="form-control input-navbar-login", type="text", name="username", placeholder="Käyttäjä", required="true")
-									div(class="input-group input-navbar")
-										span(class="input-group-addon")
-											i(class="fa fa-key fa-fw navbar-icon", aria-hidden="true")
-										input(class="form-control input-navbar-login", type="password", name="password", placeholder="Salasana", required="true")
-									button(type="submit", class="btn btn-navbar-icon btn-navbar-right", id="navbar-btn-login")
-										i(class="fa fa-sign-in navbar-icon")
+						form(class="navbar-form", role="form", action="/galleria/login", method="post")
+							a(class="btn btn-navbar-icon btn-navbar-left", id="navbar-btn-help", href="/galleria/user/login")
+								i(class="fa fa-question navbar-icon")
+							div(class="form-group")
+								div(class="input-group input-navbar")
+									span(class="input-group-addon")
+										i(class="fa fa-user fa-fw navbar-icon", aria-hidden="true")
+									input(class="form-control input-navbar-login", type="text", name="username", placeholder="Käyttäjä", required="true")
+								div(class="input-group input-navbar")
+									span(class="input-group-addon")
+										i(class="fa fa-key fa-fw navbar-icon", aria-hidden="true")
+									input(class="form-control input-navbar-login", type="password", name="password", placeholder="Salasana", required="true")
+								button(type="submit", class="btn btn-navbar-icon", id="navbar-btn-login")
+									i(class="fa fa-sign-in navbar-icon")
