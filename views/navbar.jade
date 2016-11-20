@@ -25,40 +25,35 @@ nav(class="navbar navbar-default", role="navigation")
 						a(href="/galleria/media/haku") Haku
 					if (user)
 						li
-							a(href="/galleria/media/lisaa") Lisää
+							a(href="/galleria/media/laheta") Lisää
 					//li
 					//	a(href="#") Keskustelualue
 					//li
 					//	a(href="#") Käyttäjät
 				ul(class="nav navbar-nav navbar-right")
-					if (!user)
+					if (user)
+						li
+							a(class="login-info") #{user.username}
+						li
+							form(class="navbar-form", role="form", action="/galleria/logout", method="get")
+								button(type="submit", class="btn btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
+									i(class="fa fa-sign-out navbar-icon")
+					else
 						if url === "/user/login" || url === "/user/register" || url ==="/user/forgot" || url==="/user/reset"
 							li
 								a(class="login-info") Ei kirjautunut
 						else
-							form(class="navbar-form", role="form", action="/galleria/user/login", method="post")
-								a(class="btn btn-info btn-navbar-icon btn-navbar-left", id="navbar-btn-help", href="/galleria/user/login")
+							form(class="navbar-form", role="form", action="/galleria/login", method="post")
+								a(class="btn btn-navbar-icon btn-navbar-left", id="navbar-btn-help", href="/galleria/user/login")
 									i(class="fa fa-question navbar-icon")
-								a(class="btn btn-primary btn-navbar-icon btn-navbar-left", id="navbar-btn-register", href="/galleria/user/register")
-									i(class="fa fa-user-plus navbar-icon")
 								div(class="form-group")
 									div(class="input-group input-navbar")
 										span(class="input-group-addon")
-											i(class="fa fa-user fa-fw", aria-hidden="true")
+											i(class="fa fa-user fa-fw navbar-icon", aria-hidden="true")
 										input(class="form-control input-navbar-login", type="text", name="username", placeholder="Käyttäjä", required="true")
-									//input(name="username", type="text", class="form-control input-navbar-login", placeholder="Username")
 									div(class="input-group input-navbar")
 										span(class="input-group-addon")
-											i(class="fa fa-key fa-fw", aria-hidden="true")
+											i(class="fa fa-key fa-fw navbar-icon", aria-hidden="true")
 										input(class="form-control input-navbar-login", type="password", name="password", placeholder="Salasana", required="true")
-									//input(name="password", type="password", class="form-control input-navbar-login", placeholder="Password")
-									//div(class="navbar-bottom-form")
-									button(type="submit", class="btn btn-success btn-navbar-icon btn-navbar-right", id="navbar-btn-login")
+									button(type="submit", class="btn btn-navbar-icon btn-navbar-right", id="navbar-btn-login")
 										i(class="fa fa-sign-in navbar-icon")
-					if (user)
-							li
-								a(class="login-info") #{user}
-							li
-								form(class="navbar-form", role="form", action="/galleria/logout", method="get")
-									button(type="submit", class="btn btn-danger btn-navbar-icon btn-navbar-right", id="navbar-btn-logout")
-										i(class="fa fa-sign-out navbar-icon")

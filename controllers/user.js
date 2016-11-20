@@ -18,140 +18,36 @@ router.use(methodOverride(function(req, res){
 }))
 
 /*
- *	/USER/REGISTER	GET
- *	
- *
- *
- *
- */
-router.get('/register', function(req, res) {
-	if (req.session.user != null) {				//Ei näytetä rekisteröintiä, koska käyttäjä on jo kirjautunut
-		res.redirect('/galleria');
-	}
-	else {
-		res.render('user/register', {			//Näytetään rekisteröitymissivu
-			title: 'Rekisteröityminen',
-			url: req.originalUrl,
-			messages: req.flash()
-		});
-	}
-});
-
-
-
-/*
- *	/USER/REGISTER	POST
- *
- *
- *
- *
- */
-router.post('/register', function(req, res) {
-
-	var username = req.body.username;
-	var userpassword = req.body.password;
-	var email = req.body.email;
-
-	var salt = bcrypt.genSaltSync(16);
-	var password = bcrypt.hashSync(userpassword,salt);
-	console.log('Creating new user: ' + username + ' with password: ' + password);
-    mongoose.model('User').create({						//Lisätään käyttäjä tietokantaan
-		username: username,
-		email: email,
-		password: password,
-	},function (err, user) {
-		if (err) {										//Käyttäjän lisäyksessä tietokantaan tapahtui virhe
-			//console.log(err);
-			if (err.code == 11000) {
-				//message(duplikaatti käyttäjä)
-			}
-			else {
-				res.send(err);
-			}	
-		}
-		else {											//Käyttäjä lisättiin tietokantaan onnistuneesti
-			req.session.user = username;
-			console.log('User ' + username + ' created succesfully');
-			req.flash('success','Uusi käyttäjä luotu onnistuneesti');
-			res.render('index', {
-				title : 'Tervetuloa galleriaan',
-				user: req.session.user,
-				url: req.originalUrl,
-				messages: req.flash()
-			});
-		}
-	})
-});
-
-
-
-/*
- *	/USER/LOGIN		GET
+ *	/USER/LOGIN	GET
  *
  *
  *
  *
  */
 router.get('/login', function(req, res) {
-	if (req.session.user != null) {				//Ei näytetä kirjautumissivua, koska käyttäjä on jo kirjautunut
-		res.redirect('/galleria');
-	}
-	else {										//Näytetään kirjautumissivu käyttäjälle
-		res.render('user/login', {
-			title : 'Sisäänkirjautuminen',
-			url: req.originalUrl,
-			messages: req.flash()
-		});
-	}
+	res.render('user/login', {
+		title : 'Sisäänkirjautuminen',
+		url: req.originalUrl,
+		user: req.user,
+		messages: req.flash()
+	});
 });
 
-
-
 /*
- *	/USER/LOGIN		POST
+ *	/USER/LOGIN	GET
  *
  *
  *
  *
  */
-router.post('/login', function(req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-	console.log("Login for: "+username);
-	mongoose.model('User').findOne({
-		username: username
-	},function (err, user) {
-		if (err) {													//Käyttäjää ei löytynyt tietokannasta
-			//console.log(err);
-			res.send(err);
-		}
-		else {														//Käyttäjä löytyi tietokannasta, joten verrataan syötettyä salasanaa tallennettuun salasanaan
-			if(user == null) {
-				console.log('User: ' + username + ' does not exist');
-				req.flash('error','Sisäänkirjatuminen epäonnistui. Tarkista tunnuksesi.');
-				res.redirect('/galleria/user/login');
-			}
-			else {
-				var hash = user.password;
-				console.log('User ' + username + ' found. Comparing password to hash.');
-				var login = bcrypt.compareSync(password, hash);
-				if (login == true) {									//Salasanat vastasivat toisiaan
-					console.log('User: ' + username + ' logged in succesfully');
-					req.session.user = username;
-					req.flash('success','Sisäänkirjautuminen onnistui');
-					res.redirect(req.get('referer'));
-				}
-				else {													//Salasanat eivät vastanneet toisiaan
-					console.log('Wrong password for: ' + username);
-					req.flash('error','Sisäänkirjatuminen epäonnistui. Tarkista tunnuksesi.');
-					res.redirect('/galleria/user/login');
-				}
-			}
-		}
+router.get('/register', function(req, res) {
+	res.render('user/register', {
+		title : 'Rekisteröityminen',
+		url: req.originalUrl,
+		user: req.user,
+		messages: req.flash()
 	});
 });
-
-
 
 /*
  *	/USER/FORGOT	GET
@@ -168,6 +64,7 @@ router.get('/forgot', function(req, res) {
 		res.render('user/forgot', {
 			title : 'Unohdin salasanani',
 			url: req.originalUrl,
+			user: req.user,
 			messages: req.flash()
 		});
 	}
@@ -291,6 +188,7 @@ router.get('/reset', function(req, res) {
 					res.render('user/reset', {					//Näytetään resetointi sivu
 						title : 'Salasanan resetointi',
 						url: (req.originalUrl).split("?")[0],
+						user: req.user,
 						messages: req.flash()
 					});
 				}

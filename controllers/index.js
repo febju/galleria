@@ -1,34 +1,55 @@
 var express = require('express');
 var router = express.Router();
 
-/*
- *	/	GET
- *
- *
- *
- *
- */
-router.get('/', function (req, res) {
-    res.render('index', {								//Näytetään etusivu
-		title : 'Galleria',
-		user: req.session.user,
-		url: req.originalUrl,
-		messages: req.flash()
+var isAuthenticated = function (req, res, next) {
+	// if user is authenticated in the session, call the next() to call the next request handler 
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+	if (req.isAuthenticated()){
+		return next();
+	}
+	// if the user is not authenticated then redirect him to the login page
+	res.redirect('/');
+}
+
+module.exports = function(passport){
+
+	router.get('/', function(req, res) {
+		res.render('index', {
+			title: 'Galleria',
+			user: req.user,
+			messages: req.flash()
+		});
 	});
-});
+	
+	router.get('/login', function(req, res) {
+		res.render('user/login', {
+			title: 'Sisäänkirjautuminen',
+			messages: req.flash()
+		});
+	});
 
-/*
- *	/LOGOUT	GET
- *
- *
- *
- *
- */
-router.get('/logout', function(req, res) {
-	console.log('Logging out: ' + req.session.user);
-    req.session.destroy();
-	//message(kirjauduttu ulos käyttäjältä x)
-    res.redirect('/galleria');							//Ohjataan etusivulle
-});
+	/* Handle Login POST */
+	router.post('/login', passport.authenticate('login', {
+		successRedirect: 'back',
+		successFlash : true,
+		failureRedirect: '/galleria/login',
+		failureFlash : true  
+	}));
 
-module.exports = router;
+	/* Handle Registration POST */
+	router.post('/register', passport.authenticate('signup', {
+		successRedirect: '/galleria',
+		successFlash : true,
+		failureRedirect: '/galleria/user/register',
+		failureFlash : true  
+	}));
+
+	/* Handle Logout */
+	router.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/galleria');
+	});
+
+	return router;
+}

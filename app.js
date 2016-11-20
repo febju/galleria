@@ -18,10 +18,7 @@ var token = require('./models/token');
 //
 var flash = require('connect-flash');
 
-//
-var routes = require('./controllers/index');
-var user = require('./controllers/user');
-var media = require('./controllers/media');
+
 
 //
 var app = express();
@@ -30,15 +27,20 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// STATIC PATH
+app.use(express.static(path.join(__dirname, '/public')));
+
 //
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('secret'));
 
+var passport = require('passport');
 //
-app.use(flash());
-
+var routes = require('./controllers/index')(passport);
+var user = require('./controllers/user');
+var media = require('./controllers/media');
 //session init
 app.use(session({
     secret: 'mueph6ro',
@@ -50,8 +52,15 @@ app.use(session({
 	}
 }));
 
-// STATIC PATH
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//
+app.use(flash());
+
+var initPassport = require('./authentication/init');
+initPassport(passport);
+
 
 // ROUTES/CONTROLLERS
 app.use('/', routes);

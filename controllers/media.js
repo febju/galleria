@@ -36,14 +36,12 @@ router.use(methodOverride(function(req, res){
       }
 }))
 
-router.route('/')
-
-.get(function(req, res, next) {
+router.route('/').get(function(req, res, next) {
 	res.format({
 		html: function(){
 			res.render('media/index', {
 				title: 'Media',
-				user : req.session.user,
+				user: req.user,
 				url: req.originalUrl,
 				messages: req.flash()
 			});
@@ -54,7 +52,7 @@ router.route('/')
 router.get('/haku', function(req, res) {
     res.render('media/search', { 
 		title: 'Haku',
-		user : req.session.user,
+		user: req.user,
 		url: req.originalUrl,
 		messages: req.flash()
 	});
@@ -63,7 +61,7 @@ router.get('/haku', function(req, res) {
 router.get('/laheta', function(req, res) {
     res.render('media/submit', {
 		title: 'Lähetä tiedosto',
-		user : req.session.user,
+		user: req.user,
 		url: req.originalUrl,
 		messages: req.flash()
 	});

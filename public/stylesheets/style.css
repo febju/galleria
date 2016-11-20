@@ -27,9 +27,14 @@ a {
 	max-width: 90px;
 }
 
-.btn-navbar-icon{
+input-group-addon.navbar{
 	height: 34px;
 	width: 34px;
+	padding: 0px 12px 0px 12px;
+}
+
+.btn-navbar-icon{
+	border: 1px solid #CCCCCC;
 }
 
 .btn-navbar-left{
@@ -80,7 +85,10 @@ a {
 }
 
 .navbar-icon{
+	height: 14px;
+	width: 8px;
 	color: #555555;
+	padding: 0px 0px 0px 0px; 
 }
 
 .form-submit{
@@ -118,7 +126,7 @@ img{
 	
 	.btn-navbar-icon{
 		width: 68px;
-	}
+	}	
 	
 	#navbar-btn-register{
 		float:right;
@@ -137,7 +145,7 @@ img{
 	}
 	
 	.navbar-form {
-		border: 0px;
+		border: 1px;
 	}
 	
 	.navbar-bottom-form{

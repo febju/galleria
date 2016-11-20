@@ -5,13 +5,12 @@ block content
 	link(rel="stylesheet", href="/galleria/stylesheets/input-file.css")
 	
 	h2= title
-	form(action="/galleria/media/lisaa", method="post", enctype="multipart/form-data")
-		div(class="")
-			input(type="file", id="filesubmit", class="input-file", name="submission", required="true")
-			label(for="filesubmit", class="form-control form-submit")
-				span(id="filename")
-				strong()
-					i(class="fa fa-file-o" aria-hidden="true")
+	form(action="/galleria/media/laheta", method="post", enctype="multipart/form-data")
+		input(type="file", id="filesubmit", class="input-file", name="submission", required="true")
+		label(for="filesubmit", class="form-control form-submit")
+			span(id="filename")
+			strong()
+				i(class="fa fa-file-o" aria-hidden="true")
 		input(class="form-control form-submit", type="text", name="name", placeholder="Median nimi", required="true")
 		textarea(class="form-control form-submit", rows="6")
 		button(type="submit", class="btn btn-default") Lähetä
