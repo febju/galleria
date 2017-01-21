@@ -9,5 +9,5 @@ bin/www
 
 npm-debug.log
 
-/uploads
+/uploads/*
 

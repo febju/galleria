@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var	bodyParser = require('body-parser'); //parses information from POST
 var	methodOverride = require('method-override'); //used to manipulate POST
 var multer = require('multer');
+var Media = require('../models/media');
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -25,7 +26,25 @@ var upload = multer({storage:storage, fileFilter: function (req, file, cb) {
 		cb(null, true);
 	}
 });
+/*
+module.exports = function(){
+	saveMedia = function(req, file, name, desc){
+			var newMedia = new Media();
+			// set the user's local credentials
+			newMedia.file = file;
+			newMedia.name = name;
+			newMedia.desc = desc;
 
+			newMedia.save(function(err) {
+				if (err){
+					console.log('Error in Saving user: '+err);  
+					throw err;  
+				}
+				console.log('User Registration succesful');    
+				return done(null, newUser);
+	});}
+}
+*/
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(methodOverride(function(req, res){
       if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -74,8 +93,26 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		res.redirect('/galleria/media/laheta');
 	}
 	else {
+		var newMedia = new Media();
+		
+		newMedia.file = req.file.filename;
+		newMedia.name = req.param('name');
+		newMedia.desc = req.param('description');
+		
+
+		newMedia.save(function(err) {
+			if (err){
+				console.log('Error in Saving user: '+err);  
+				throw err;  
+			}
+			console.log('User Registration succesful');    
+			//return done(null, newMedia);
+		});
+		
 		req.flash('success','Tiedosto lähetetty onnistuneesti');
 		res.redirect('/galleria/media');
+
+			
 	}
 });
 
