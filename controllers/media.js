@@ -77,16 +77,20 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 	else {
 		var newMedia = new Media();
 		
+		var ext = req.file.mimetype;
+		ext = ext.substring(0, ext.indexOf("/"));
+		
 		newMedia.file = req.file.filename;
 		newMedia.name = req.param('name');
 		newMedia.desc = req.param('description');
+		newMedia.filetype = ext;
 
 		newMedia.save(function(err) {
 			if (err){
-				console.log('Error in Saving user: '+err);  
+				console.log('Error in saving media: '+err);  
 				throw err;  
 			}
-			console.log('User Registration succesful');    
+			console.log('Media saving successful');    
 			//return done(null, newMedia);
 		});
 		
