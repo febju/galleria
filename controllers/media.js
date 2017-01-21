@@ -81,7 +81,6 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		newMedia.file = req.file.filename;
 		newMedia.name = req.param('name');
 		newMedia.desc = req.param('description');
-		
 
 		newMedia.save(function(err) {
 			if (err){
@@ -94,10 +93,16 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		
 		req.flash('success','Tiedosto lähetetty onnistuneesti');
 		res.redirect('/galleria/media');
-
-			
 	}
 });
 
+router.get('/detail', function(req, res) {
+    res.render('media/detail', { 
+		title: 'Detail',
+		user: req.user,
+		url: req.originalUrl,
+		messages: req.flash()
+	});
+});
 
 module.exports = router;
