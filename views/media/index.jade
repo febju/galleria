@@ -1,5 +1,35 @@
 extends ../layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1= title
+	p Welcome to #{title}
+	ul(class="list-group")
+		each file in files
+			li(class="list-group-item") #{file.name}
+		if (pageCount > 1)
+			ul(class="pagination")
+				if (currentPage > 1)
+					li
+						a(href="/galleria/media/?page=1") &laquo;
+				- var i = 1;
+				if (currentPage > 5)
+					i = + currentPage -4;
+				if (i !== 1)
+					li(class="disabled")
+						a(href="#") ...
+				- for (var i = 1; i<=pageCount; i++) {
+					if (currentPage == i)
+						li(class="active")
+							span #{i}
+								span(class="sr-only") (current)
+					else
+						li
+							a(href="/galleria/media/?page=#{i}") #{i}
+					if (i == (+currentPage +4))
+						li(class="disabled")
+							a(href="#") ...
+					break
+				- }
+				if (currentPage != pageCount)
+					li
+						a(href="/galleria/media/?page=#{pageCount}") &raquo;

@@ -38,16 +38,54 @@ router.use(methodOverride(function(req, res){
 }))
 
 router.route('/').get(function(req, res, next) {
-	//INDEX
-	res.format({
-		html: function(){
-			res.render('media/index', {
-				title: 'Media',
-				user: req.user,
-				url: req.originalUrl,
-				messages: req.flash()
+	
+	mongoose.model('Media').find({}, function (err, mediafiles) {
+		if (err) {
+			return console.error(err);
+		} else {
+			//respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
+			var totalFiles = (mediafiles.length - 1),
+			pageSize = 2,
+			pageCount = Math.round(totalFiles/2),
+			currentPage = 1,
+			files = [],
+			filesArrays = [], 
+			filesList = [];
+			//genreate list of students
+			console.log('MÄÄRÄ: '+mediafiles.length);   
+			mediafiles.forEach(function(mediafile){
+				console.log('MEDIUM: '+mediafile.name);
+				files.push({name:mediafile.name});
 			});
-		},
+
+			//split list into groups
+			while (files.length > 0) {
+				filesArrays.push(files.splice(0, pageSize));
+			}
+
+			//set current page if specifed as get variable (eg: /?page=2)
+			if (typeof req.query.page !== 'undefined') {
+				currentPage = +req.query.page;
+			}
+
+			//show list of students from group
+			filesList = filesArrays[+currentPage - 1];
+			res.format({
+				html: function(){
+					res.render('media/index', {
+						title: 'Media',
+						user: req.user,
+						url: req.originalUrl,
+						messages: req.flash(),
+						files: filesList,
+						pageSize: pageSize,
+						totalFiles: totalFiles,
+						pageCount: pageCount,
+						currentPage: currentPage
+					});
+				},
+			});
+		}     
 	});
 })
 
@@ -81,6 +119,7 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		newMedia.file = req.file.filename;
 		newMedia.name = req.param('name');
 		newMedia.desc = req.param('description');
+		
 
 		newMedia.save(function(err) {
 			if (err){
@@ -93,16 +132,10 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		
 		req.flash('success','Tiedosto lähetetty onnistuneesti');
 		res.redirect('/galleria/media');
+
+			
 	}
 });
 
-router.get('/detail', function(req, res) {
-    res.render('media/detail', { 
-		title: 'Detail',
-		user: req.user,
-		url: req.originalUrl,
-		messages: req.flash()
-	});
-});
 
 module.exports = router;
