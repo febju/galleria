@@ -120,6 +120,28 @@ img{
 	opacity: 0.75;
 }
 
+.media-gallery{
+	background-color: #D8D8D8;
+	padding: 15px 15px;
+}
+
+.media-frame{
+	height: 236px;
+	margin: 0.25px 0px;
+	background-color: #C8C8C8;
+}
+
+.media-preview{
+	height: 200px;
+	overflow: hidden;
+	margin-top: 5px;
+}
+
+.media-name{
+	font-size: 16px;
+	text-align: center;
+}
+
 @media(max-width: 768px) {
 
 	.navbar-nav {
