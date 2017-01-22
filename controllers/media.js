@@ -45,31 +45,40 @@ router.route('/').get(function(req, res, next) {
 		} else {
 			//respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
 			var totalFiles = (mediafiles.length - 1),
-			pageSize = 2,
-			pageCount = Math.round(totalFiles/2),
+			pageSize = 20,
+			pageCount = Math.ceil(totalFiles/pageSize),
 			currentPage = 1,
 			files = [],
-			filesArrays = [], 
+			filesArrays = [],
 			filesList = [];
 			//genreate list of students
-			console.log('MÄÄRÄ: '+mediafiles.length);   
+			if (req.param('page') != null) currentPage = req.param('page');
+			
 			mediafiles.forEach(function(mediafile){
-				console.log('MEDIUM: '+mediafile.name);
-				files.push({name:mediafile.name});
+				//console.log('MEDIUM: '+mediafile.name);
+				files.push({
+					file:mediafile.file,
+					name:mediafile.name	
+				});
 			});
-
+			
+			//split list into groups
+			while (files.length > 0) {
+				filesArrays.push(files.splice(0, pageSize));
+			}
+			
+			filesList = filesArrays[+currentPage - 1];
+			
 			//split list into groups
 			while (files.length > 0) {
 				filesArrays.push(files.splice(0, pageSize));
 			}
 
-			//set current page if specifed as get variable (eg: /?page=2)
+			//EI TOIMI ?
 			if (typeof req.query.page !== 'undefined') {
 				currentPage = +req.query.page;
 			}
 
-			//show list of students from group
-			filesList = filesArrays[+currentPage - 1];
 			res.format({
 				html: function(){
 					res.render('media/index', {

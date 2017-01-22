@@ -30,6 +30,8 @@ app.set('view engine', 'jade');
 // STATIC PATH
 app.use(express.static(path.join(__dirname, '/public')));
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 //
 app.use(logger('dev'));
 app.use(bodyParser.json());
