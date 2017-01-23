@@ -28,27 +28,30 @@ module.exports = function(mediafiles,req,res,title){
 		filesArrays.push(files.splice(0, pageSize));
 	}
 
-	//EI TOIMI ?
+	//
 	if (typeof req.query.page !== 'undefined') {
 		currentPage = +req.query.page;
 	}
 	
+	if (currentPage > pageCount) {
+		req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
+		if (title != 'kaikki') res.redirect('/galleria/media/'+title);
+		else res.redirect('/galleria/media/');
+		return
+	}
+	
 	filesList = filesArrays[+currentPage - 1];
 
-	res.format({
-		html: function(){
-			res.render('media/index', {
-				title: title,
-				user: req.user,
-				url: req.originalUrl,
-				messages: req.flash(),
-				files: filesList,
-				pageSize: pageSize,
-				totalFiles: totalFiles,
-				pageCount: pageCount,
-				currentPage: currentPage
-			});
-		},
+	res.render('media/index', {
+		title: title,
+		user: req.user,
+		url: req.originalUrl,
+		messages: req.flash(),
+		files: filesList,
+		pageSize: pageSize,
+		totalFiles: totalFiles,
+		pageCount: pageCount,
+		currentPage: currentPage
 	});
 
 }

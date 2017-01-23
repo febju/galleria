@@ -43,7 +43,7 @@ router.route('/').get(function(req, res, next) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res);
+			serve(mediafiles,req,res,'kaikki');
 		}     
 	});
 });
@@ -53,7 +53,7 @@ router.route('/kuvat').get(function(req, res, next) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'Kuvat');
+			serve(mediafiles,req,res,'kuvat');
 		}     
 	});
 });
@@ -63,7 +63,7 @@ router.route('/videot').get(function(req, res, next) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'Videot');
+			serve(mediafiles,req,res,'videot');
 		}     
 	});
 });
@@ -73,7 +73,7 @@ router.route('/aanet').get(function(req, res, next) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res.'Äänet');
+			serve(mediafiles,req,res,'aanet');
 		}     
 	});
 });
