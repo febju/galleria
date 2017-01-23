@@ -137,6 +137,15 @@ img{
 	margin-top: 5px;
 }
 
+.media-preview a{
+	color: black;
+}
+
+.media-gallery-icon{
+	font-size: 192px;
+	background-color: white;
+}
+
 .media-name{
 	font-size: 16px;
 	text-align: center;

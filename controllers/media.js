@@ -44,7 +44,7 @@ router.route('/').get(function(req, res, next) {
 			return console.error(err);
 		} else {
 			//respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
-			var totalFiles = (mediafiles.length - 1),
+			var totalFiles = (mediafiles.length),
 			pageSize = 20,
 			pageCount = Math.ceil(totalFiles/pageSize),
 			currentPage = 1,
@@ -52,12 +52,11 @@ router.route('/').get(function(req, res, next) {
 			filesArrays = [],
 			filesList = [];
 			//genreate list of students
-			if (req.param('page') != null) currentPage = req.param('page');
 			
 			mediafiles.forEach(function(mediafile){
-				//console.log('MEDIUM: '+mediafile.name);
 				files.push({
-					file:mediafile.file,
+					filename:mediafile.filename,
+					filetype: mediafile.filetype,
 					name:mediafile.name	
 				});
 			});
@@ -67,7 +66,6 @@ router.route('/').get(function(req, res, next) {
 				filesArrays.push(files.splice(0, pageSize));
 			}
 			
-			filesList = filesArrays[+currentPage - 1];
 			
 			//split list into groups
 			while (files.length > 0) {
@@ -78,6 +76,8 @@ router.route('/').get(function(req, res, next) {
 			if (typeof req.query.page !== 'undefined') {
 				currentPage = +req.query.page;
 			}
+			
+			filesList = filesArrays[+currentPage - 1];
 
 			res.format({
 				html: function(){
@@ -128,11 +128,15 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		var ext = req.file.mimetype;
 		ext = ext.substring(0, ext.indexOf("/"));
 		
-		newMedia.file = req.file.filename;
+		var file_id = req.file.filename;
+		file_id = file_id.substring(0, file_id.indexOf("."));
+		
+		newMedia.filename = req.file.filename;
+		newMedia.file = file_id;
 		newMedia.name = req.param('name');
 		newMedia.desc = req.param('description');
-
 		newMedia.filetype = ext;
+		newMedia.approved = false;
 
 
 		newMedia.save(function(err) {
