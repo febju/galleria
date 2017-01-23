@@ -14,10 +14,10 @@ block content
 								img(src="/galleria/uploads/#{file.filename}" class="img-responsive" alt="#{file.name}")
 							if (file.filetype == 'video')
 								div(class="text-center")
-									i(class="fa fa-file-video-o media-gallery-icon" aria-hidden="true")
+									i(class="fa fa-video-camera media-gallery-icon" aria-hidden="true")
 							if (file.filetype == 'audio')
 								div(class="text-center")
-									i(class="fa fa-file-audio-o media-gallery-icon" aria-hidden="true")
+									i(class="fa fa-music media-gallery-icon" aria-hidden="true")
 					p(class="media-name") #{file.name}
 		if (pageCount > 1)
 			div(class="text-center")

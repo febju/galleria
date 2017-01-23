@@ -5,6 +5,7 @@ var	bodyParser = require('body-parser'); //parses information from POST
 var	methodOverride = require('method-override'); //used to manipulate POST
 var multer = require('multer');
 var Media = require('../models/media');
+var serve = require('../help/serve');
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -12,6 +13,7 @@ var storage = multer.diskStorage({
 	},
 	filename: function (req, file, cb) {
 		var extension = (file.mimetype).split("/")[1];
+		if (file.mimetype == 'audio/mpeg') extension = 'mp3';
 		cb(null, Date.now()+"."+ extension)
 	}
 })
@@ -30,73 +32,51 @@ var upload = multer({storage:storage, fileFilter: function (req, file, cb) {
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(methodOverride(function(req, res){
       if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-        // look in urlencoded POST bodies and delete it
         var method = req.body._method
         delete req.body._method
         return method
       }
 }))
 
-router.route('/').get(function(req, res, next) {
-	
+router.route('/').get(function(req, res, next) {	
 	mongoose.model('Media').find({}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			//respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
-			var totalFiles = (mediafiles.length),
-			pageSize = 20,
-			pageCount = Math.ceil(totalFiles/pageSize),
-			currentPage = 1,
-			files = [],
-			filesArrays = [],
-			filesList = [];
-			//genreate list of students
-			
-			mediafiles.forEach(function(mediafile){
-				files.push({
-					filename:mediafile.filename,
-					filetype: mediafile.filetype,
-					name:mediafile.name	
-				});
-			});
-			
-			//split list into groups
-			while (files.length > 0) {
-				filesArrays.push(files.splice(0, pageSize));
-			}
-			
-			
-			//split list into groups
-			while (files.length > 0) {
-				filesArrays.push(files.splice(0, pageSize));
-			}
-
-			//EI TOIMI ?
-			if (typeof req.query.page !== 'undefined') {
-				currentPage = +req.query.page;
-			}
-			
-			filesList = filesArrays[+currentPage - 1];
-
-			res.format({
-				html: function(){
-					res.render('media/index', {
-						title: 'Media',
-						user: req.user,
-						url: req.originalUrl,
-						messages: req.flash(),
-						files: filesList,
-						pageSize: pageSize,
-						totalFiles: totalFiles,
-						pageCount: pageCount,
-						currentPage: currentPage
-					});
-				},
-			});
+			serve(mediafiles,req,res);
 		}     
 	});
-})
+});
+
+router.route('/kuvat').get(function(req, res, next) {	
+	mongoose.model('Media').find({filetype: 'image'}, function (err, mediafiles) {
+		if (err) {
+			return console.error(err);
+		} else {
+			serve(mediafiles,req,res,'Kuvat');
+		}     
+	});
+});
+
+router.route('/videot').get(function(req, res, next) {	
+	mongoose.model('Media').find({filetype: 'video'}, function (err, mediafiles) {
+		if (err) {
+			return console.error(err);
+		} else {
+			serve(mediafiles,req,res,'Videot');
+		}     
+	});
+});
+
+router.route('/aanet').get(function(req, res, next) {	
+	mongoose.model('Media').find({filetype: 'audio'}, function (err, mediafiles) {
+		if (err) {
+			return console.error(err);
+		} else {
+			serve(mediafiles,req,res.'Äänet');
+		}     
+	});
+});
 
 router.get('/haku', function(req, res) {
     res.render('media/search', { 

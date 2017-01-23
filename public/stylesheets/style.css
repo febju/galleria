@@ -138,12 +138,11 @@ img{
 }
 
 .media-preview a{
-	color: black;
+	color: gray;
 }
 
 .media-gallery-icon{
 	font-size: 192px;
-	background-color: white;
 }
 
 .media-name{
