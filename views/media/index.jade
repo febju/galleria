@@ -3,7 +3,7 @@ extends ../layout
 block content
 	h1= title
 	p Welcome to #{title}
-	include searchx
+	include tools
 	ul(class="list-group")
 		div(class="container-fluid media-gallery")
 			each file in files
@@ -20,36 +20,4 @@ block content
 								div(class="text-center")
 									i(class="fa fa-music media-gallery-icon" aria-hidden="true")
 					p(class="media-name") #{file.name}
-		if (pageCount > 1)
-			div(class="text-center")
-				ul(class="pagination")
-					if (currentPage > 1)
-						li
-							a(href="/galleria/media/?page=1") &laquo;
-					else
-						li(class="disabled")
-							a(href="/galleria/media/?page=1") &laquo;
-					- var i = 1;
-					if (currentPage > 5)
-						- i = currentPage -4;
-					if (i !== 1)
-						li(class="disabled")
-							a(href="#") ...
-					- for (var i; i<=pageCount; i++) {
-						if (currentPage == i)
-							li(class="active")
-								a(href="#") #{i}
-						else
-							li
-								a(href="/galleria/media/?page=#{i}") #{i}
-						if (i == (+currentPage +4))
-							li(class="disabled")
-								a(href="#") ...
-							- break
-					- }
-					if (currentPage != pageCount)
-						li
-							a(href="/galleria/media/?page=#{pageCount}") &raquo;
-					else
-						li(class="disabled")
-							a(href="/galleria/media/?page=#{pageCount}") &raquo;
+		include pagination
