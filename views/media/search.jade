@@ -1,5 +1,40 @@
-extends ../layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+div(class="search")
+	div(class="row")
+		div(class="col-md-12 search-bar")
+			div(class="input-group")
+				div(class="input-group-btn search-panel")
+					button(id="search-filter-toggle" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown")
+						span(id="search_concept") Rajaa
+						span(class="caret")
+					ul(class="dropdown-menu" role="menu")
+						li(class="dropdown-header" style="font-size:100%; font-weight: bold;") Mediatyypit
+							li(id="all")
+								a(href="#" class="small" data-value="all" tabIndex="-1") Kaikki
+							li(id="image")
+								a(href="#" class="small" data-value="image" tabIndex="-1") Kuvat
+							li(id="video")
+								a(href="#" class="small" data-value="video" tabIndex="-1") Videot
+							li(id="audio")
+								a(href="#" class="small" data-value="audio" tabIndex="-1") Äänet
+				input(type="hidden" name="search_param" value="all" id="search_param")        
+				input(type="text" class="form-control" name="x" placeholder="Hae...")
+				span(class="input-group-btn")
+					button(class="btn btn-primary" type="button")
+						span(class="glyphicon glyphicon-search")
+script().
+	$(document).ready(function(e){
+		var previous = null;
+		$('.search-panel .dropdown-menu').find('a').click(function(e) {
+			e.preventDefault();
+			var param = $(this).attr("href").replace("#","");
+			var concept = $(this).text();
+			$('.search-panel span#search_concept').text(concept);
+			$('.input-group #search_param').val(param);
+			var filter = this.getAttribute('data-value');
+			$( '#'+filter ).css( "background-color", "#428bca" );
+			if (filter != 'all') $( '#search-filter-toggle' ).css( "background-color", "#428bca" );
+			else $( '#search-filter-toggle' ).css( "background-color", "white" );
+			if (previous != null) $( '#'+previous ).css( "background-color", "white" );
+			previous = filter;
+		});
+	});

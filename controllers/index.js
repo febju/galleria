@@ -13,7 +13,16 @@ var isAuthenticated = function (req, res, next) {
 }
 
 module.exports = function(passport){
-
+	
+	
+	
+	/*
+	 *	/		GET
+	 *
+	 *
+	 *
+	 *
+	 */
 	router.get('/', function(req, res) {
 		res.render('index', {
 			title: 'Galleria',
@@ -22,6 +31,15 @@ module.exports = function(passport){
 		});
 	});
 	
+	
+	
+	/*
+	 *	/LOGIN/		GET
+	 *
+	 *
+	 *
+	 *
+	 */
 	router.get('/login', function(req, res) {
 		res.render('user/login', {
 			title: 'Sisäänkirjautuminen',
@@ -29,7 +47,15 @@ module.exports = function(passport){
 		});
 	});
 
-	/* Handle Login POST */
+	
+	
+	/*
+	 *	/LOGIN/		POST
+	 *
+	 *
+	 *
+	 *
+	 */
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: 'back',
 		successFlash : true,
@@ -37,7 +63,15 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	/* Handle Registration POST */
+	
+	
+	/*
+	 *	/REGISTER/		GET
+	 *
+	 *
+	 *
+	 *
+	 */
 	router.post('/register', passport.authenticate('signup', {
 		successRedirect: '/galleria',
 		successFlash : true,
@@ -45,7 +79,15 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	/* Handle Logout */
+	
+	
+	/*
+	 *	/LOGOUT/		GET
+	 *
+	 *
+	 *
+	 *
+	 */
 	router.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/galleria');

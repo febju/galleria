@@ -150,6 +150,38 @@ img{
 	text-align: center;
 }
 
+.search-bar{
+	margin-bottom: 10px;
+}
+
+.search-bar-dropdown{
+	z-index: 1;
+	opacity: 0.90;
+}
+
+.checkbox{
+	padding: 0px 0px;
+	margin: 10px 35px;
+}
+
+.search  input[type="checkbox"] {
+	margin-left: 5px;
+	margin-top: 6px;
+}
+
+.search .dropdown-header{
+	font-weight: bold;
+	font-size: 150%;
+}
+
+.search label{
+	font-size: 125%;
+}
+
+.search-bar-dropdown .btn{
+	margin: 10px 20px;
+}
+
 @media(max-width: 768px) {
 
 	.navbar-nav {

@@ -3,6 +3,7 @@ extends ../layout
 block content
 	h1= title
 	p Welcome to #{title}
+	include searchx
 	ul(class="list-group")
 		div(class="container-fluid media-gallery")
 			each file in files

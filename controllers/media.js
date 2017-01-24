@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var	bodyParser = require('body-parser'); //parses information from POST
-var	methodOverride = require('method-override'); //used to manipulate POST
+var	bodyParser = require('body-parser');
+var	methodOverride = require('method-override');
 var multer = require('multer');
 var Media = require('../models/media');
 var serve = require('../help/serve');
@@ -38,6 +38,15 @@ router.use(methodOverride(function(req, res){
       }
 }))
 
+
+
+/*
+ *	/MEDIA/				GET
+ *
+ *	Mediagallerian etusivu
+ *
+ *
+ */
 router.route('/').get(function(req, res, next) {	
 	mongoose.model('Media').find({}, function (err, mediafiles) {
 		if (err) {
@@ -48,37 +57,73 @@ router.route('/').get(function(req, res, next) {
 	});
 });
 
-router.route('/kuvat').get(function(req, res, next) {	
+
+
+/*
+ *	/MEDIA/IMAGE		GET
+ *
+ * Mediagallerian kuvakategorian etusivu
+ *
+ *
+ */
+router.route('/image').get(function(req, res, next) {	
 	mongoose.model('Media').find({filetype: 'image'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'kuvat');
+			serve(mediafiles,req,res,'image');
 		}     
 	});
 });
 
-router.route('/videot').get(function(req, res, next) {	
+
+
+/*
+ *	/MEDIA/VIDEO		GET
+ *
+ * Mediagallerian videokategorian etusivu
+ *
+ *
+ */
+router.route('/video').get(function(req, res, next) {	
 	mongoose.model('Media').find({filetype: 'video'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'videot');
+			serve(mediafiles,req,res,'video');
 		}     
 	});
 });
 
-router.route('/aanet').get(function(req, res, next) {	
+
+
+/*
+ *	/MEDIA/AUDIO		GET
+ *
+ * Mediagallerian audiokategorian etusivu
+ *
+ *
+ */
+router.route('/audio').get(function(req, res, next) {	
 	mongoose.model('Media').find({filetype: 'audio'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'aanet');
+			serve(mediafiles,req,res,'audio');
 		}     
 	});
 });
 
-router.get('/haku', function(req, res) {
+
+
+/*
+ *	/MEDIA/SEARCH		POST
+ *
+ *	Mediagallerian hakusivu
+ *
+ *
+ */
+router.post('/search', function(req, res) {
     res.render('media/search', { 
 		title: 'Haku',
 		user: req.user,
@@ -87,7 +132,16 @@ router.get('/haku', function(req, res) {
 	});
 });
 
-router.get('/laheta', function(req, res) {
+
+
+/*
+ *	/MEDIA/SUBMIT		GET
+ *
+ *	Median lähetyssivu
+ *	-Käyttäjä syöttää haluamansa tiedoston ja sille tarvitut tiedot.
+ *
+ */
+router.get('/submit', function(req, res) {
     res.render('media/submit', {
 		title: 'Lähetä tiedosto',
 		user: req.user,
@@ -96,11 +150,20 @@ router.get('/laheta', function(req, res) {
 	});
 });
 
-router.post('/laheta', upload.single('submission'), function(req, res) {
+
+
+/*
+ *	/MEDIA/SUBMIT		POST
+ *
+ *	Median lähetyssivu
+ *	-Median tiedot talletetaan tietokantaan ja mediatiedosto talletetaan palvelimelle.
+ *
+ */
+router.post('/submit', upload.single('submission'), function(req, res) {
 	console.log("UPLOADING:    "+req.file.filename);
 	if (req.fileValidationError != null) {
 		req.flash('error','Tiedoston tyyppi ei ollut oikeanlainen.\nSallitut tiedostotyypit: .png .jpg .jpeg .bmp .gif .webm .mp3 .mp4');
-		res.redirect('/galleria/media/laheta');
+		res.redirect('/galleria/media/submit');
 	}
 	else {
 		var newMedia = new Media();
@@ -131,7 +194,6 @@ router.post('/laheta', upload.single('submission'), function(req, res) {
 		req.flash('success','Tiedosto lähetetty onnistuneesti');
 		res.redirect('/galleria/media');
 
-			
 	}
 });
 

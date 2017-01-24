@@ -18,10 +18,11 @@ router.use(methodOverride(function(req, res){
 }))
 
 /*
- *	/USER/LOGIN	GET
+ *	/USER/LOGIN		GET
  *
- *
- *
+ *	Sisäänkirjautumissivu
+ *	-Käyttäjä voi halutessaan kirjautua sisään tältä sivulta.
+ *	-Sisältää linkit rekisteröitymiseen ja salasanan resetoimiseen.
  *
  */
 router.get('/login', function(req, res) {
@@ -33,11 +34,13 @@ router.get('/login', function(req, res) {
 	});
 });
 
+
+
 /*
- *	/USER/LOGIN	GET
+ *	/USER/REGISTER		GET
  *
- *
- *
+ *	Rekisteröitymissivu
+ *	-Uuden käyttäjän on mahdollista rekisteröityä tällä sivulla.
  *
  */
 router.get('/register', function(req, res) {
@@ -49,11 +52,13 @@ router.get('/register', function(req, res) {
 	});
 });
 
+
+
 /*
  *	/USER/FORGOT	GET
  *
- *
- *
+ *	Salasananpyyntösivu
+ *	-Käyttäjä voi palauttaa salasanansa tätä kautta.
  *
  */
 router.get('/forgot', function(req, res) {
@@ -75,8 +80,10 @@ router.get('/forgot', function(req, res) {
 /*
  *	/USER/FORGOT	POST
  *
- *
- *
+ *	Salasananpyyntösivu
+ *	-Jos käyttäjän syöttämät tilitiedot täsmäävät, luodaan resetointi koodi jolla pääsee resetoimaan salasanansa.
+ *	-Linkki resetointisivulle lähetetään käyttäjälle sähköpostitse.
+ *	-Resetointi pyyntö on voimassa vain rajatun ajan, kunnes annettu koodi ei enää toimi.
  *
  */
 router.post('/forgot', function(req, res) {
@@ -114,7 +121,9 @@ router.post('/forgot', function(req, res) {
 						pass: post_pass
 					}
 				}));
-				var randomstring = require('randomstring');															//Luodaan avain linkkiä varten, jotta käyttäjä voidaan tunnistaa linkin perusteella
+				//Luodaan avain linkkiä varten, jotta käyttäjä voidaan tunnistaa linkin perusteella
+				var randomstring = require('randomstring');
+				//Luodaan linkin tunniste
 				var token = randomstring.generate(12);
 				console.log('Generating password reset token: ' + token + ' for user: ' + user.username);
 				mongoose.model('Token').create({																	//Talletetaan linkin avain tietokantaan
@@ -157,8 +166,8 @@ router.post('/forgot', function(req, res) {
 /*
  *	/USER/RESET		GET
  *
- *
- *
+ *	Salasananresetointisivu
+ *	-Jos avain täsmää käyttäjätilille annettuun resetointiavaimeen, pääsee käyttäjä vaihtamaan itselleen uuden salasanan.
  *
  */
 router.get('/reset', function(req, res) {
@@ -202,8 +211,8 @@ router.get('/reset', function(req, res) {
 /*
  *	/USER/RESET		POST
  *
- *
- *
+ *	Salasananresetointisivu
+ *	-Salasanan syötettyä tallenetaan uusi salasana tietokantaan ja ohjataan käyttäjä kirjautumaan.
  *
  */
 router.post('/reset', function(req, res) {
