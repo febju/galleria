@@ -6,6 +6,7 @@ var	methodOverride = require('method-override');
 var multer = require('multer');
 var Media = require('../models/media');
 var serve = require('../help/serve');
+var filter = require('../help/filter');
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -39,7 +40,6 @@ router.use(methodOverride(function(req, res){
 }))
 
 
-
 /*
  *	/MEDIA/				GET
  *
@@ -47,12 +47,13 @@ router.use(methodOverride(function(req, res){
  *
  *
  */
-router.route('/').get(function(req, res, next) {	
+router.route('/').get(function(req, res, next) {
+	var path = '';
 	mongoose.model('Media').find({}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'kaikki');
+			serve(mediafiles,req,res,'kaikki',path);
 		}     
 	});
 });
@@ -66,12 +67,13 @@ router.route('/').get(function(req, res, next) {
  *
  *
  */
-router.route('/image').get(function(req, res, next) {	
+router.route('/image').get(function(req, res, next) {
+	var path = '/image';
 	mongoose.model('Media').find({filetype: 'image'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'image');
+			serve(mediafiles,req,res,'image',path);
 		}     
 	});
 });
@@ -85,12 +87,13 @@ router.route('/image').get(function(req, res, next) {
  *
  *
  */
-router.route('/video').get(function(req, res, next) {	
+router.route('/video').get(function(req, res, next) {
+	var path = '/video';
 	mongoose.model('Media').find({filetype: 'video'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'video');
+			serve(mediafiles,req,res,'video',path);
 		}     
 	});
 });
@@ -104,14 +107,29 @@ router.route('/video').get(function(req, res, next) {
  *
  *
  */
-router.route('/audio').get(function(req, res, next) {	
+router.route('/audio').get(function(req, res, next) {
+	var path = '/audio';
 	mongoose.model('Media').find({filetype: 'audio'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'audio');
+			serve(mediafiles,req,res,'audio',path);
 		}     
 	});
+});
+
+
+
+/*
+ *	/MEDIA/SEARCH		GET
+ *
+ *	Mediagallerian hakusivu
+ *
+ *
+ */
+router.get('/search', function(req, res) {
+	req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
+    res.redirect('/galleria/media');
 });
 
 
@@ -124,12 +142,43 @@ router.route('/audio').get(function(req, res, next) {
  *
  */
 router.post('/search', function(req, res) {
-    res.render('media/search', { 
-		title: 'Haku',
-		user: req.user,
-		url: req.originalUrl,
-		messages: req.flash()
-	});
+	var path = '/search';
+	var filetype = req.body.filetype;
+	var attribute = req.body.attribute;
+	var search = req.body.query;
+	var filtered = [];
+	if ( typeof (req.body.attribute) == 'object') {
+		mongoose.model('Media').find( { $or: [{ name: new RegExp( search, 'i') }, { desription: new RegExp( search, 'i') } ] }, function (err, mediafiles) {
+			if (err) {
+				return console.error(err);
+			} else {
+				filtered = filter(filetype,mediafiles,req);
+				serve(filtered,req,res,'search',path);
+			}
+		});
+	}
+	else {
+		if (attribute == 'name') {
+			mongoose.model('Media').find( { name: new RegExp( search, 'i') }, function (err, mediafiles) {
+				if (err) {
+					return console.error(err);
+				} else {
+					filtered = filter(filetype,mediafiles,req);
+					serve(filtered,req,res,'search',path);
+				}
+			});
+		}
+		else {
+			mongoose.model('Media').find( { description: new RegExp( search, 'i') }, function (err, mediafiles) {
+				if (err) {
+					return console.error(err);
+				} else {
+					filtered = filter(filetype,mediafiles,req);
+					serve(filtered,req,res,'search',path);
+				}
+			});
+		}
+	}
 });
 
 
