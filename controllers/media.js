@@ -48,13 +48,14 @@ router.use(methodOverride(function(req, res){
  *
  */
 router.route('/').get(function(req, res, next) {
+	var title = 'Mediagalleria';
 	var path = '';
 	if (typeof req.query.id == "undefined"){
 		mongoose.model('Media').find({}, function (err, mediafiles) {
 			if (err) {
 				return console.error(err);
 			} else {
-				serve(mediafiles,req,res,'kaikki');
+				serve(mediafiles,req,res,title,path);
 			}     
 		});
 	} else {
@@ -83,12 +84,13 @@ router.route('/').get(function(req, res, next) {
  *
  */
 router.route('/image').get(function(req, res, next) {
+	var title = 'Kuvat';
 	var path = '/image';
 	mongoose.model('Media').find({filetype: 'image'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'image',path);
+			serve(mediafiles,req,res,title,path);
 		}     
 	});
 });
@@ -103,12 +105,13 @@ router.route('/image').get(function(req, res, next) {
  *
  */
 router.route('/video').get(function(req, res, next) {
+	var title = 'Videot';
 	var path = '/video';
 	mongoose.model('Media').find({filetype: 'video'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'video',path);
+			serve(mediafiles,req,res,title,path);
 		}     
 	});
 });
@@ -123,12 +126,13 @@ router.route('/video').get(function(req, res, next) {
  *
  */
 router.route('/audio').get(function(req, res, next) {
+	var title = 'Äänet';
 	var path = '/audio';
 	mongoose.model('Media').find({filetype: 'audio'}, function (err, mediafiles) {
 		if (err) {
 			return console.error(err);
 		} else {
-			serve(mediafiles,req,res,'audio',path);
+			serve(mediafiles,req,res,title,path);
 		}     
 	});
 });
@@ -157,6 +161,7 @@ router.get('/search', function(req, res) {
  *
  */
 router.post('/search', function(req, res) {
+	var title = 'Haku';
 	var path = '/search';
 	var filetype = req.body.filetype;
 	var attribute = req.body.attribute;
@@ -168,7 +173,7 @@ router.post('/search', function(req, res) {
 				return console.error(err);
 			} else {
 				filtered = filter(filetype,mediafiles,req);
-				serve(filtered,req,res,'search',path);
+				serve(filtered,req,res,title,path);
 			}
 		});
 	}
@@ -179,7 +184,7 @@ router.post('/search', function(req, res) {
 					return console.error(err);
 				} else {
 					filtered = filter(filetype,mediafiles,req);
-					serve(filtered,req,res,'search',path);
+					serve(filtered,req,res,title,path);
 				}
 			});
 		}
@@ -189,7 +194,7 @@ router.post('/search', function(req, res) {
 					return console.error(err);
 				} else {
 					filtered = filter(filetype,mediafiles,req);
-					serve(filtered,req,res,'search',path);
+					serve(filtered,req,res,title,path);
 				}
 			});
 		}
