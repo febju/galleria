@@ -47,14 +47,29 @@ router.use(methodOverride(function(req, res){
  *
  *
  */
-router.route('/').get(function(req, res, next) {	
-	mongoose.model('Media').find({}, function (err, mediafiles) {
-		if (err) {
-			return console.error(err);
-		} else {
-			serve(mediafiles,req,res,'kaikki');
-		}     
-	});
+router.route('/').get(function(req, res, next) {
+	if (typeof req.query.id == "undefined"){
+		mongoose.model('Media').find({}, function (err, mediafiles) {
+			if (err) {
+				return console.error(err);
+			} else {
+				serve(mediafiles,req,res,'kaikki');
+			}     
+		});
+	} else {
+		mongoose.model('Media').findOne({file : req.query.id}, function (err, mediafile){
+			if (err){
+				return console.error(err);
+			} else {
+				res.render('media/detail', {
+					title: mediafile.name,
+					user: req.user,
+					url: req.originalUrl,
+					file: mediafile
+				});
+			}
+		});
+	}
 });
 
 

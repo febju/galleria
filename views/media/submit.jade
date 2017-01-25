@@ -5,7 +5,7 @@ block content
 	link(rel="stylesheet", href="/galleria/stylesheets/input-file.css")
 	
 	h2= title
-	form(action="/galleria/media/laheta", method="post", enctype="multipart/form-data")
+	form(action="/galleria/media/submit", method="post", enctype="multipart/form-data")
 		input(type="file", id="filesubmit", class="input-file", name="submission", required="true")
 		label(for="filesubmit", class="form-control form-submit")
 			span(id="filename")

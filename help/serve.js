@@ -12,8 +12,9 @@ module.exports = function(mediafiles,req,res,title){
 	mediafiles.forEach(function(mediafile){
 		files.push({
 			filename:mediafile.filename,
+			file:mediafile.file,
 			filetype: mediafile.filetype,
-			name:mediafile.name	
+			name:mediafile.name
 		});
 	});
 	
