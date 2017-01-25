@@ -10,8 +10,7 @@ block content
 				each file in files
 					div(class="col-md-3 col-xs-12 col img-thumbnail media-frame")
 						div(class="media-preview")
-							//a(href="/galleria/media/?id=#{file.file}")
-							a(href="/galleria/uploads/#{file.filename}")
+							a(href="/galleria/media/?id=#{file.file}")
 								if (file.filetype == 'image')
 									img(src="/galleria/uploads/#{file.filename}" class="img-responsive" alt="#{file.name}")
 								if (file.filetype == 'video')

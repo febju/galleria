@@ -1,4 +1,14 @@
-extends ../layout
+﻿extends ../layout
 
 block content
+	h1= title
+	img(src="/galleria/uploads/#{file.filename}" class="img-responsive" alt="#{file.name}")
+	script().
+		$(document).bind('keypress', function(e) {
+			if (e.keyCode == '37') {
 
+			}
+			if (e.keyCode == '39') {
+				
+			}
+		});
