@@ -52,7 +52,7 @@ router.route('/').get(function(req, res, next) {
 	var path = '';
 	if (typeof req.query.id == "undefined"){
 		var all = Media.find().exec();
-		promise.then(function(mediafiles) {
+		all.then(function(mediafiles) {
 			serve(mediafiles,req,res,title,path);
 		})
 		.catch(function(err){

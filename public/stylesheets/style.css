@@ -9,7 +9,6 @@ h1 {
 }
 
 p {
-	font-size: 300%;
 	color: gray;
 }
 
@@ -133,6 +132,7 @@ img{
 
 .media-preview{
 	height: 200px;
+	width: auto;
 	overflow: hidden;
 	margin-top: 5px;
 }
@@ -176,6 +176,36 @@ img{
 
 #adv-search label{
 	font-size: 125%;
+}
+
+.image-container {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.control-container{
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.control-container a {
+	color: gray;
+}
+
+.control-container .fa {
+	font-size: 350%
+}
+
+.left-neighbor {
+	float: left;
+}
+
+.right-neighbor {
+	float: right;
+}
+
+.control-container span {
+	font-size: 300%;
 }
 
 @media(max-width: 768px) {
@@ -257,6 +287,15 @@ img{
 	
 	#content{
 		max-width: 90%;
+	}
+	
+	.img-container:hover .overlay-left {
+		width: 15%;
+	}
+
+	.img-container:hover .overlay-right {
+		width: 15%;
+		left: 85%;
 	}
 }
 

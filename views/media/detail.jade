@@ -1,19 +1,56 @@
 ﻿extends ../layout
 
 block content
-	h1= title
-	img(src="/galleria/uploads/#{file.filename}" class="img-responsive" alt="#{file.name}")
-	if (typeof prev != 'undefined')
-		script.
-			$(document).bind('keypress', function(e) {
-				if (e.keyCode == '37') {
-					window.location.href = "/galleria/media/?id=#{prev.file}";
-				}
-			});
-	if (typeof next != 'undefined')
-		script.
-			$(document).bind('keypress', function(e) {
-				if (e.keyCode == '39') {
-					window.location.href = "/galleria/media/?id=#{next.file}";
-				}
-			});
+	div(class="media-container col-md-10 col-md-offset-1 col-xs-12")
+		div(class="title-container col-md-12 col-xs-12 text-center")
+			h1 #{title}
+		div(class="panel panel-default col-md-12 col-xs-12")
+			div(class="image-container col-md-12 col-xs-12")
+				img(src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
+			div(class="control-container  col-md-12 col-xs-12")
+				if (typeof prev != 'undefined')
+					a(class="btn btn-default left-neighbor" role="button" href="/galleria/media/?id=#{prev.file}")
+						i(class="fa fa-angle-double-left" aria-hidden="true")
+						script.
+							$(document).bind('keypress', function(e) {
+								if (e.keyCode == '37') {
+									window.location.href = "/galleria/media/?id=#{prev.file}";
+								}
+							});
+				else
+					a(class="btn btn-default left-neighbor disabled" role="button" href="#")
+						i(class="fa fa-angle-double-left" aria-hidden="true")
+				span #{title}
+				if (typeof next != 'undefined')
+					a(class="btn btn-default right-neighbor" role="button" href="/galleria/media/?id=#{next.file}")
+						i(class="fa fa-angle-double-right" aria-hidden="true")
+					script.
+						$(document).bind('keypress', function(e) {
+							if (e.keyCode == '39') {
+								window.location.href = "/galleria/media/?id=#{next.file}";
+							}
+						});
+				else
+					a(class="btn btn-default right-neighbor disabled" role="button" href="#")
+						i(class="fa fa-angle-double-right" aria-hidden="true")
+			div(class="description-container col-md-12 col-xs-12")
+				if (typeof file.desc != 'undefined')
+					div(class="panel panel-default")
+						div(class="panel-heading")
+							h4 Kuvaus
+						div(class="panel-body")
+							p #{file.desc}
+	script.
+		$(document).ready(function(e){
+			var height = $( '.img-responsive' ).height();
+			$( '.overlay' ).css( "height", height );
+		});
+			
+		window.onresize = function(event) {
+			var height = $( '.img-responsive' ).height();
+			$( '.overlay' ).css( "height", height );
+		};
+		
+		$('img').hover(function(e){
+			//alert();
+		});

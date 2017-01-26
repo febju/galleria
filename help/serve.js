@@ -12,7 +12,7 @@ module.exports = function(mediafiles,req,res,title,path){
 			filename:mediafile.filename,
 			file:mediafile.file,
 			filetype: mediafile.filetype,
-			name:mediafile.name	
+			name:mediafile.name,
 		});
 	});
 	//split list into groups
@@ -38,14 +38,6 @@ module.exports = function(mediafiles,req,res,title,path){
 	
 	var forms = populate_search_form(req);
 	
-	var query_text = forms['query_text'];
-	var checkbox_image = forms['checkbox_image'];
-	var checkbox_video = forms['checkbox_video'];
-	var checkbox_audio = forms['checkbox_audio'];
-	var checkbox_name = forms['checkbox_name'];
-	var checkbox_description = forms['checkbox_description'];
-	var no_query = forms['no_query'];
-	
 	res.render('media/index', {
 		title: title,
 		user: req.user,
@@ -57,13 +49,13 @@ module.exports = function(mediafiles,req,res,title,path){
 		pageCount: pageCount,
 		currentPage: currentPage,
 		path: path,
-		populate_query: query_text,
-		populate_checkbox_image: checkbox_image,
-		populate_checkbox_video: checkbox_video,
-		populate_checkbox_audio: checkbox_audio,
-		populate_checkbox_name: checkbox_name,
-		populate_checkbox_description: checkbox_description,
-		no_query: no_query
+		populate_query: forms['query_text'],
+		populate_checkbox_image: forms['checkbox_image'],
+		populate_checkbox_video: forms['checkbox_video'],
+		populate_checkbox_audio: forms['checkbox_audio'],
+		populate_checkbox_name: forms['checkbox_name'],
+		populate_checkbox_description: forms['checkbox_description'],
+		no_query: forms['no_query']
 	});
 	
 	function populate_search_form() {
