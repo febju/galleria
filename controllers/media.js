@@ -126,12 +126,12 @@ router.route('/').get(function(req, res, next) {
 router.route('/image').get(function(req, res, next) {
 	var title = 'Kuvat';
 	var path = '/image';
-	mongoose.model('Media').find({filetype: 'image'}, function (err, mediafiles) {
-		if (err) {
-			return console.error(err);
-		} else {
-			serve(mediafiles,req,res,title,path);
-		}     
+	var images = Media.find( { filetype: 'image' } ).exec();
+	images.then(function(mediafiles) {
+		serve(mediafiles,req,res,title,path);
+	})
+	.catch(function(err){
+		console.log('error:', err);
 	});
 });
 
@@ -147,12 +147,12 @@ router.route('/image').get(function(req, res, next) {
 router.route('/video').get(function(req, res, next) {
 	var title = 'Videot';
 	var path = '/video';
-	mongoose.model('Media').find({filetype: 'video'}, function (err, mediafiles) {
-		if (err) {
-			return console.error(err);
-		} else {
-			serve(mediafiles,req,res,title,path);
-		}     
+	var videos = Media.find( { filetype: 'video' } ).exec();
+	videos.then(function(mediafiles) {
+		serve(mediafiles,req,res,title,path);
+	})
+	.catch(function(err){
+		console.log('error:', err);
 	});
 });
 
@@ -168,12 +168,12 @@ router.route('/video').get(function(req, res, next) {
 router.route('/audio').get(function(req, res, next) {
 	var title = 'Äänet';
 	var path = '/audio';
-	mongoose.model('Media').find({filetype: 'audio'}, function (err, mediafiles) {
-		if (err) {
-			return console.error(err);
-		} else {
-			serve(mediafiles,req,res,title,path);
-		}     
+	var audio = Media.find( { filetype: 'audio' } ).exec();
+	audio.then(function(mediafiles) {
+		serve(mediafiles,req,res,title,path);
+	})
+	.catch(function(err){
+		console.log('error:', err);
 	});
 });
 
