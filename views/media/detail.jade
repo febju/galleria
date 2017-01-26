@@ -3,12 +3,23 @@
 block content
 	h1= title
 	img(src="/galleria/uploads/#{file.filename}" class="img-responsive" alt="#{file.name}")
-	script().
-		$(document).bind('keypress', function(e) {
-			if (e.keyCode == '37') {
-
-			}
-			if (e.keyCode == '39') {
-				
-			}
-		});
+	if (typeof prev != 'undefined')
+		a(id="prev" class="btn btn-secondary" href="/galleria/media/?id=#{prev.file}") prev
+		script.
+			$(document).bind('keypress', function(e) {
+				if (e.keyCode == '37') {
+					//window.location.href = "/galleria/media/?id=#{prev.file}";
+					alert('prev');
+					$( "#prev" ).trigger( "click" );
+				}
+			});
+	if (typeof next != 'undefined')
+		a(id="next" class="btn btn-secondary" href="/galleria/media/?id=#{next.file}") next
+		script.
+			$(document).bind('keypress', function(e) {
+				if (e.keyCode == '39') {
+					//window.location.href = "/galleria/media/?id=#{next.file}";
+					alert('next');
+					$( "#next" ).trigger( "click" );
+				}
+			});

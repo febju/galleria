@@ -59,15 +59,64 @@ router.route('/').get(function(req, res, next) {
 			}     
 		});
 	} else {
-		mongoose.model('Media').findOne({file : req.query.id}, function (err, mediafile){
+		mongoose.model('Media').findOne({file : req.query.id}, function (err, detailfile){
 			if (err){
 				return console.error(err);
 			} else {
-				res.render('media/detail', {
-					title: mediafile.name,
-					user: req.user,
-					url: req.originalUrl,
-					file: mediafile
+				var prev = detailfile._id-1;
+				var next = detailfile._id+1;
+				var browse_files = [];
+				var max;
+				var min;
+				var previous_file;
+				var next_file;
+				mongoose.model('Media').findOne({}, null, {sort: '-_id'}, function(err, max_id) {
+					if (err){
+						return console.error(err);
+					} else {
+						max = max_id._id;
+						console.log('MAX: '+max);
+					}
+				});
+				mongoose.model('Media').findOne({}, null, {sort: '_id'}, function(err, min_id) {
+					if (err){
+						return console.error(err);
+					} else {
+						min = min_id._id;
+						console.log('MIN: '+min);
+						mongoose.model('Media').find({$or: [{_id : prev},{_id : next}]}, function (err, mediafiles){
+							if (err){
+								return console.error(err);
+							} else {
+								mediafiles.forEach(function(browse_file){
+									browse_files.push({
+										filename:browse_file.filename,
+										file:browse_file.file,
+										filetype: browse_file.filetype,
+										name:browse_file.name	
+									});
+								});
+								console.log(min+' vs '+detailfile._id+' vs '+max);
+								if ((detailfile._id != min) || (detailfile._id != max)) {
+									if (detailfile._id != min && detailfile._id != max) {
+										previous_file = browse_files[0];
+										next_file = browse_files[1];
+									}
+									if (detailfile._id == min) next_file = browse_files[0];
+									if (detailfile._id == max) previous_file = browse_files[0];
+								}
+								console.log(previous_file+' .......................... '+next_file);
+								res.render('media/detail', {
+									title: detailfile.name,
+									user: req.user,
+									url: req.originalUrl,
+									file: detailfile,
+									prev: previous_file,
+									next: next_file
+								});
+							}
+						});
+					}
 				});
 			}
 		});

@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 
 //authentication
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 var db = require('./models/db');
 var user = require('./models/user');
 var token = require('./models/token');
