@@ -6,7 +6,11 @@ block content
 			h1 #{title}
 		div(class="panel panel-default col-md-12 col-xs-12")
 			div(class="image-container col-md-12 col-xs-12")
-				img(src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
+				img(id="imgdet" src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
+				div(id="modal" class="modal")
+					span(class="close" onclick="document.getElementById('modal').style.display='none'") &times
+					img(class="modal-content" src="/galleria/uploads/#{file.filename}" id="imgmod")
+					div(id="caption")
 			div(class="control-container  col-md-12 col-xs-12")
 				if (typeof prev != 'undefined')
 					a(class="btn btn-default left-neighbor" role="button" href="/galleria/media/?id=#{prev.file}")
@@ -44,6 +48,8 @@ block content
 		$(document).ready(function(e){
 			var height = $( '.img-responsive' ).height();
 			$( '.overlay' ).css( "height", height );
+			var modal_margin =  $( '.navbar' ).height();
+			$( '.modal' ).css( "margin-top", modal_margin );
 		});
 			
 		window.onresize = function(event) {
@@ -51,6 +57,22 @@ block content
 			$( '.overlay' ).css( "height", height );
 		};
 		
+		$('.img-responsive').click(function(e){
+			modal.style.display = "block";
+			modalImg.src = this.src;
+			captiontext.innerHTML = this.alt;
+		});
+		
+		$('.modal').click(function(){
+			$('.modal').hide(); 
+		});
+		
+		$(document).keypress(function(e) { 
+			if (e.keyCode == 27) { 
+				$('.modal').hide();
+			} 
+		});
+
 		$('img').hover(function(e){
 			//alert();
 		});
