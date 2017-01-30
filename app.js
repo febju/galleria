@@ -24,6 +24,7 @@ mongoose.Promise = global.Promise;
 var db;
 
 var config = require('config');
+
 var env = config.util.getEnv('NODE_ENV');
 
 if (env === 'development') {
@@ -105,7 +106,6 @@ if (app.get('env') === 'development') {
     });
   });
 }
-else mongoose.createConnection('mongodb://localhost/galleria_prod');
 
 // production error handler
 // no stacktraces leaked to user

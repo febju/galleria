@@ -29,9 +29,11 @@ module.exports = function(mediafiles,req,res,title,path){
 	}
 	
 	if (currentPage > pageCount && totalFiles > 0) {
+		console.log('liikaa sivuja');
 		var back = '/galleria/media'+path;
 		req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
 		res.redirect(back);
+		return
 	}
 
 	filesList = filesArrays[+currentPage - 1];
