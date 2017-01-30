@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-	"production": "NODE_ENV=production node ./bin/www",
+    "start": "SUPPRESS_NO_CONFIG_WARNING=true node ./bin/www",
+	"production": "NODE_ENV=production SUPPRESS_NO_CONFIG_WARNING=true node ./bin/www",
 	"test": "mocha"
   },
   "dependencies": {
