@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 
 //
@@ -68,7 +69,8 @@ app.use(session({
     saveUninitialized: false,
 	cookie: {
 		secure: false
-	}
+	},
+	store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 app.use(passport.initialize());
