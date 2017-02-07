@@ -32,16 +32,15 @@ html
 	//flash-messages 101:
 	div(class="js-message")
 	div(class="messages")
-	if(!messages.success)
-		.message.success
+	if(messages != null)
+		if(messages.success != null)
 			div(class="alert alert-success")
 				a(href="#", class="close", data-dismiss="alert", aria-label="close") &times;
-				span= messages.success
-	if(!messages.error)
-		.message.error
+				span #{messages.success}
+		if(messages.error != null)
 			div(class="alert alert-danger")
 				a(href="#", class="close", data-dismiss="alert", aria-label="close") &times;
-				span= messages.error
+				span #{messages.error}
 	div(id="content", class="container")
 		block content
 	include footer
