@@ -3,18 +3,12 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 
 //
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-//authentication
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var db = require('./models/db');
-var user = require('./models/user');
-var token = require('./models/token');
 
 //
 var flash = require('connect-flash');
@@ -23,6 +17,29 @@ var flash = require('connect-flash');
 
 //
 var app = express();
+
+//authentication
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
+var db;
+
+var config = require('config');
+
+var env = config.util.getEnv('NODE_ENV');
+
+if (env === 'development') {
+	db = mongoose.connect('mongodb://localhost/galleria');
+}
+if (env === 'test') {
+	db = mongoose.connect('mongodb://localhost/galleria_test');
+}
+if (env === 'production') {
+	db = mongoose.connect('mongodb://localhost/galleria_production');
+}
+
+var user = require('./models/user');
+var token = require('./models/token');
 
 // VIEWS
 app.set('views', path.join(__dirname, 'views'));
@@ -52,7 +69,8 @@ app.use(session({
     saveUninitialized: false,
 	cookie: {
 		secure: false
-	}
+	},
+	store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 app.use(passport.initialize());
@@ -69,9 +87,6 @@ initPassport(passport);
 app.use('/', routes);
 app.use('/user', user);
 app.use('/media', media);
-
-// MONGOOSE INIT
-mongoose.createConnection('mongodb://localhost/galleria');
 
 // 404
 app.use(function(req, res, next) {

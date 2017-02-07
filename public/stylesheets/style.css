@@ -179,8 +179,11 @@ img{
 }
 
 .image-container {
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin: 20px 0px;
+}
+
+.image-container  .thumbnail{
+	margin-bottom: 0px;
 }
 
 .control-container{
@@ -204,18 +207,21 @@ img{
 	float: right;
 }
 
-.control-container span {
-	font-size: 300%;
-}
-
  /* Style the Image Used to Trigger the Modal */
-#imgdet {
+.image-container .img-responsive {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-#imgdet:hover {opacity: 0.7;}
+.image-container .img-responsive:hover {
+	opacity: 0.7;
+	cursor: zoom-in;
+}
+
+.modal:hover {
+	cursor: zoom-out;
+}
 
 /* The Modal (background) */
 .modal {
@@ -239,7 +245,7 @@ img{
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
-#caption {
+.caption {
     margin: auto;
     display: block;
     width: 80%;
@@ -251,7 +257,7 @@ img{
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content, #caption {
+.modal-content, .caption {
     -webkit-animation-name: zoom;
     -webkit-animation-duration: 0.6s;
     animation-name: zoom;
@@ -266,24 +272,6 @@ img{
 @keyframes zoom {
     from {transform:scale(0)}
     to {transform:scale(1)}
-}
-
-/* The Close Button */
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 /* 100% Image Width on Smaller Screens */
@@ -374,14 +362,46 @@ img{
 		max-width: 90%;
 	}
 	
-	.img-container:hover .overlay-left {
-		width: 15%;
+	.media-container {
+		padding: 0;
+	}
+	
+	.media-container .panel {
+		padding: 0;
+	}
+	
+	.image-container {
+		margin: 10px 5px;
+	}
+	
+	.control-container {
+		margin: 5px 0px;
+	}
+	
+	.control-container .fa {
+		font-size: 250%;
+	}
+	
+	.description-container {
+		margin: 10px 0px;
+	}
+	
+	.description-container .panel {
+		margin: 0px 0px;
+	}
+	
+	.description-container .panel-heading {
+		padding: 0px 10px;
+	}
+	
+	.description-container .panel-heading h4 {
+		margin: 5px 0px;
+	}
+	
+	.description-container .panel .panel-body {
+		padding: 5px 10px;
 	}
 
-	.img-container:hover .overlay-right {
-		width: 15%;
-		left: 85%;
-	}
 }
 
 @media(min-width: 768px) {
