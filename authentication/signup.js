@@ -7,7 +7,7 @@ module.exports = function(passport){
 	passport.use('signup', new LocalStrategy({
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
-        function(req, username, password) {
+        function(req, username, password, done) {
 			
 			var email = req.body.email;
 			
@@ -17,23 +17,23 @@ module.exports = function(passport){
                     // In case of any error, return using the done method
                     if (err){
                         console.log('Error in SignUp: '+err);
-                        return (err);
+                        return done(err);
                     }
                     // already exists
                     if (user) {
                         console.log('User already exists with email: '+ email);
-                        return (null, false, req.flash('error','Sähköpostiosoite on jo käytössä.'));
+                        return done(null, false, req.flash('error','Sähköpostiosoite on jo käytössä.'));
                     } else {
                         User.findOne({ 'username' :  username }, function(err, user) {
 							// In case of any error, return using the done method
 							if (err){
 								console.log('Error in SignUp: '+err);
-								return (err);
+								return done(err);
 							}
 							// already exists
 							if (user) {
 								console.log('Username ' + username + ' is taken.');
-								return (null, false, req.flash('error','Nimimerkki on jo käytössä.'));
+								return done(null, false, req.flash('error','Nimimerkki on jo käytössä.'));
 							} else {
 								// if there is no user with that email
 								// create the user
@@ -51,7 +51,7 @@ module.exports = function(passport){
 										throw err;  
 									}
 									console.log('User Registration succesful');    
-									return (null, newUser);
+									return done(null, newUser, req.flash('success','Uusi käyttäjä rekisteröity onnistuneesti.'));
 								});
 							}
 						});

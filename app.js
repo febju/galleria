@@ -1,24 +1,12 @@
 var express = require('express');
 var path = require('path');
+
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-
-
-//
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
-//
-var flash = require('connect-flash');
-
-
-
-//
-var app = express();
-
-//authentication
+//DATABASE
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -38,30 +26,37 @@ if (env === 'production') {
 	db = mongoose.connect('mongodb://localhost/galleria_production');
 }
 
+//APP
+var app = express();
+
+//MODELS
 var user = require('./models/user');
 var token = require('./models/token');
+
+// STATIC PATHS
+app.use(express.static(path.join(__dirname, '/public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // VIEWS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// STATIC PATH
-app.use(express.static(path.join(__dirname, '/public')));
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-//
+//PARSERS
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('secret'));
 
+//PASSPORT
 var passport = require('passport');
-//
-var routes = require('./controllers/index')(passport);
-var user = require('./controllers/user');
-var media = require('./controllers/media');
-//session init
+
+//SESSION
+var session = require('express-session');
+
+//SESSION STORAGE IN MONGODB
+var MongoStore = require('connect-mongo')(session);
+
+//SESSION SETUP
 app.use(session({
     secret: 'mueph6ro',
 	name: 'sessionId',
@@ -73,17 +68,24 @@ app.use(session({
 	store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
+//PASSPORT SETUP
 app.use(passport.initialize());
 app.use(passport.session());
 
-//
+//FLASH MESSAGES
+var flash = require('connect-flash');
 app.use(flash());
 
+//PASSPORT INITIALIZE
 var initPassport = require('./authentication/init');
 initPassport(passport);
 
 
-// ROUTES/CONTROLLERS
+//ROUTES & CONTROLLERS
+var routes = require('./controllers/index')(passport);
+var user = require('./controllers/user');
+var media = require('./controllers/media');
+
 app.use('/', routes);
 app.use('/user', user);
 app.use('/media', media);

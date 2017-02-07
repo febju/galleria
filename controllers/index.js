@@ -58,7 +58,7 @@ module.exports = function(passport){
 	 */
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: 'back',
-		successFlash : true,
+		//successFlash : true,
 		failureRedirect: '/galleria/login',
 		failureFlash : true  
 	}));
@@ -66,7 +66,7 @@ module.exports = function(passport){
 	
 	
 	/*
-	 *	/REGISTER/		GET
+	 *	/REGISTER/		POST
 	 *
 	 *
 	 *
@@ -74,7 +74,7 @@ module.exports = function(passport){
 	 */
 	router.post('/register', passport.authenticate('signup', {
 		successRedirect: '/galleria',
-		successFlash : true,
+		//successFlash : true,
 		failureRedirect: '/galleria/user/register',
 		failureFlash : true  
 	}));

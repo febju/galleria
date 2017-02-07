@@ -5,7 +5,7 @@
   "scripts": {
     "start": "SUPPRESS_NO_CONFIG_WARNING=true node ./bin/www",
     "production": "NODE_ENV=production SUPPRESS_NO_CONFIG_WARNING=true node ./bin/www",
-    "test": "mocha"
+    "test": "NODE_ENV=test SUPPRESS_NO_CONFIG_WARNING=true mocha"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
