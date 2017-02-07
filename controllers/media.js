@@ -301,7 +301,7 @@ router.post('/submit', upload.single('submission'), function(req, res) {
 		});
 		
 		req.flash('success','Tiedosto lähetetty onnistuneesti');
-		res.redirect('/galleria/media');
+		res.redirect('../media');
 
 	}
 });

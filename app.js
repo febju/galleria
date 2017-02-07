@@ -94,6 +94,7 @@ app.use('/media', media);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  messages: req.flash();
   next(err);
 });
 
