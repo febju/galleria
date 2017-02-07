@@ -6,11 +6,10 @@ block content
 			h1 #{title}
 		div(class="panel panel-default col-md-12 col-xs-12")
 			div(class="image-container col-md-12 col-xs-12")
-				img(id="imgdet" src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
-				div(id="modal" class="modal")
-					span(class="close" onclick="document.getElementById('modal').style.display='none'") &times
-					img(class="modal-content" src="/galleria/uploads/#{file.filename}" id="imgmod")
-					div(id="caption")
+				img(src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
+				div(class="modal")
+					img(class="modal-content" src="/galleria/uploads/#{file.filename}")
+					div(class="caption") #{file.name}
 			div(class="control-container  col-md-12 col-xs-12")
 				if (typeof prev != 'undefined')
 					a(class="btn btn-default left-neighbor" role="button" href="/galleria/media/?id=#{prev.file}")
@@ -24,7 +23,6 @@ block content
 				else
 					a(class="btn btn-default left-neighbor disabled" role="button" href="#")
 						i(class="fa fa-angle-double-left" aria-hidden="true")
-				span #{title}
 				if (typeof next != 'undefined')
 					a(class="btn btn-default right-neighbor" role="button" href="/galleria/media/?id=#{next.file}")
 						i(class="fa fa-angle-double-right" aria-hidden="true")
@@ -58,9 +56,7 @@ block content
 		};
 		
 		$('.img-responsive').click(function(e){
-			modal.style.display = "block";
-			modalImg.src = this.src;
-			captiontext.innerHTML = this.alt;
+			$( '.modal' ).css( "display", "block" );
 		});
 		
 		$('.modal').click(function(){
