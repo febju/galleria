@@ -66,7 +66,7 @@ module.exports = function(passport){
 	
 	
 	/*
-	 *	/REGISTER/		GET
+	 *	/REGISTER/		POST
 	 *
 	 *
 	 *

@@ -4,8 +4,11 @@ var server = require('../app');
 var should = chai.should();
 var expect = chai.expect();
 
-chai.use(chaiHttp);
+var fs = require('fs');
 
+var mongoose = require('mongoose');
+
+chai.use(chaiHttp);
 
 describe('Frontpage', function() {
 	it('should show the frontpage', function(done){
@@ -29,7 +32,15 @@ describe('User', function() {
 			done();
 		});
 	});
-	it('should create new user');
+	it('should create new user', function(done) {
+		chai.request(server)
+		.post('/register')
+		.send({'username': 'Testi', 'password': 'testi', 'email': 'febju.system@gmail.com'})
+		.end(function(res){
+			done();
+		});
+	});
+
 	it('should offer feedback if user creation failed');
 });
 
@@ -43,7 +54,18 @@ describe('Login', function() {
 			done();
 		});
 	});
-	it('should allow correct logins');
+	it('should allow correct logins', function(done){
+		var agent = chai.request.agent(server);
+		agent.post('/login')
+		.send({'username': 'Testi', 'password': 'testi'})
+		.then(function(res){
+			agent.get('/user/login')
+				.then(function(res2){
+					//res2.should.redirect;
+					done();
+				});
+		});
+	});
 	it('should disallow incorrect logins');
 	it('should logout');
 });
@@ -62,6 +84,21 @@ describe('Password reset', function() {
 	it('should allow correct access password resets');
 	it('should disallow correct access password resets');
 	it('should reset password as requested');
+});
+
+describe('Media submission', function() {
+	it('should show file submission page');
+	it('should allow new file submissions from registered users', function(done){
+		chai.request(server)
+		.post('/media/submit')
+		.field('name', 'nimi')
+		.field('description', 'kuvaus')
+		.attach('submission', fs.readFileSync('./test/test.png'), 'testi.png')
+		.end(function(err, res){
+			res.should.redirect;
+			done();
+		});
+	});
 });
 
 describe('Media index', function() {
@@ -127,7 +164,12 @@ describe('Media search', function() {
 	it('should not allow access to non-existing pages');
 });
 
-describe('Media submission', function() {
-	it('should allow new file submissions from registered users');
-	it('should save new files on server');
+describe('Init', function() {
+	it('should clear database', function(done){
+		mongoose.createConnection('mongodb://localhost/galleria_test', function(){
+            mongoose.connection.db.dropDatabase(function(){
+                done();
+            });
+        });
+	});
 });

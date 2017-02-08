@@ -19,17 +19,11 @@ module.exports = function(mediafiles,req,res,title,path){
 	while (files.length > 0) {
 		filesArrays.push(files.splice(0, pageSize));
 	}
-	//split list into groups
-	while (files.length > 0) {
-		filesArrays.push(files.splice(0, pageSize));
-	}
 	//
 	if (typeof req.query.page !== 'undefined') {
 		currentPage = +req.query.page;
 	}
-	
-	if (currentPage > pageCount && totalFiles > 0) {
-		console.log('liikaa sivuja');
+	if ( (currentPage > pageCount && totalFiles > 0) || (pageCount == 0 && currentPage > 1) ) {
 		var back = '/galleria/media'+path;
 		req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
 		res.redirect(back);
