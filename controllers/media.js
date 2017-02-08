@@ -70,7 +70,7 @@ router.route('/').get(function(req, res, next) {
 		var single = Media.findOne({file : req.query.id}).exec();
 		single.then(function(media) {
 			detailmedia = media;
- 			prev = media._id-1;
+			prev = media._id-1;
 			next = media._id+1;
 		})
 		.then(function() {
@@ -109,7 +109,9 @@ router.route('/').get(function(req, res, next) {
 			});
 		})
 		.catch(function(err){
-			console.log('error:', err);
+			//console.log('error:', err);
+			req.flash('error', 'Pyydettyä mediaa ei ole olemassa.');
+			res.redirect('../media');
 		});
 	}
 });

@@ -8,6 +8,8 @@ var fs = require('fs');
 
 var mongoose = require('mongoose');
 
+var Media = require('../models/media.js');
+
 chai.use(chaiHttp);
 
 describe('Frontpage', function() {
@@ -150,7 +152,29 @@ describe('Media index', function() {
 });
 
 describe('Media detail', function() {
-	it('should show single file');
+	it('should show single file', function(done) {
+		var detail = Media.findOne().exec();
+		detail.then(function(media){
+			chai.request(server)
+			.get('/media/?id='+media.file)
+			.end(function(err, res){
+				res.should.have.status(200);
+				res.should.be.html;
+				done();
+			});
+		})
+		.catch(function(err){
+			console.log('error', err);
+		});		
+	});
+	it('should not allow access to page with bad id', function(done) {
+		chai.request(server)
+		.get('/media/?id=666')
+		.end(function(err, res){
+			res.should.redirect;
+			done();
+		});
+	});
 	it('should show information of the file');
 	it('should allow zoom for images');
 	it('should allow movement to previous file');
