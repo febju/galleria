@@ -9,7 +9,7 @@ var isAuthenticated = function (req, res, next) {
 		return next();
 	}
 	// if the user is not authenticated then redirect him to the login page
-	res.redirect('/');
+	res.redirect('./');
 }
 
 module.exports = function(passport){
@@ -58,7 +58,7 @@ module.exports = function(passport){
 		successRedirect: 'back',
 		successFlash : true,
 		//Epäonnistuessa käyttäjä ohjataan varsinaiselle kirjautumissivulle
-		failureRedirect: '/galleria/login',
+		failureRedirect: './login',
 		failureFlash : true  
 	}));
 
@@ -72,10 +72,10 @@ module.exports = function(passport){
 	 */
 	router.post('/register', passport.authenticate('signup', {
 		//Rekisteröinnin onnistuessa käyttä ohjataan etusivulle
-		successRedirect: '/galleria',
+		successRedirect: './',
 		successFlash : true,
 		//Epäonnistuessa käyttäjä ohjataan takaisin rekisteröitymissivulle
-		failureRedirect: '/galleria/user/register',
+		failureRedirect: './user/register',
 		failureFlash : true  
 	}));
 
@@ -91,7 +91,7 @@ module.exports = function(passport){
 		//Kirjataan käyttäjä ulos
 		req.logout();
 		//Ohjaus etusivulle
-		res.redirect('/galleria');
+		res.redirect('./');
 	});
 
 	return router;

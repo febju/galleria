@@ -127,7 +127,7 @@ router.route('/').get(function(req, res, next) {
 		.then(function() {
 			return Media.find({$or: [{_id : prev},{_id : next}]}).exec();
 		})
-		//Kaikki oleelliset tiedot edellisestä ja seuraavasta tiedostosta on kasattu
+		//Kaikki oleelliset tiedot edellisestä ja seuraavasta tiedostosta ovat valmiina välitettäväksi eteenpäin
 		.then(function(neighbors) {
 			//Jos tiedosto on sekä suurin ja pienin eli ainoa, ei tarvitse asettaa naapuroivia tiedostoja
 			if ((detailmedia._id != min) || (detailmedia._id != max)) {
@@ -241,7 +241,7 @@ router.route('/audio').get(function(req, res, next) {
  */
 router.get('/search', function(req, res) {
 	req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
-    res.redirect('/galleria/media');
+    res.redirect('../media');
 });
 
 
@@ -340,7 +340,7 @@ router.post('/submit', upload.single('submission'), function(req, res) {
 	if (req.fileValidationError != null) {																										//Vääränlainen tiedostotyyppi
 		//Ohjataan käyttäjä takaisin median lähetyssivulle
 		req.flash('error','Tiedoston tyyppi ei ollut oikeanlainen.\nSallitut tiedostotyypit: .png .jpg .jpeg .bmp .gif .webm .mp3 .mp4');
-		res.redirect('/galleria/media/submit');
+		res.redirect('../media/submit');
 	}
 	else {																																		//Hyväksytty tiedostotyyppi
 		var newMedia = new Media();

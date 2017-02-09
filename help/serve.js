@@ -27,7 +27,7 @@ module.exports = function(mediafiles,req,res,title,path){
 	//Tarkistetaan onko haettua sivua olemassa
 	if ( (currentPage > pageCount && totalFiles > 0) || (pageCount == 0 && currentPage > 1) ) {
 		//Jos sivua ei ole olemassa ohjataan käyttäjä takaisin sivulle, miltä tuli
-		var back = '/galleria/media'+path;
+		var back = '../media'+path;
 		req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
 		res.redirect(back);
 		return
