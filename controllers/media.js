@@ -94,7 +94,7 @@ router.route('/').get(function(req, res, next) {
 		//Haetaan tarkasteltava tiedosto
 		single_query.then(function(single) {
 			//Otetaan tarkasteltavan tiedoston tiedot
-			detailmedia = media;
+			detailmedia = single;
 			//Asetetaan edellisen ja seuraavan tiedoston _id:t
 			/*
 				HUOM!!!!!!!!!!
@@ -154,7 +154,9 @@ router.route('/').get(function(req, res, next) {
 			});
 		})
 		.catch(function(err){
-			console.log('error:', err);
+			//console.log('error:', err);
+			req.flash('error', 'Pyydettyä mediaa ei ole olemassa.');
+			res.redirect('../media');
 		});
 	}
 });
@@ -334,7 +336,7 @@ router.get('/submit', function(req, res) {
  *	-Lähetetyn median tiedot talletetaan tietokantaan ja mediatiedosto talletetaan palvelimelle.
  */
 router.post('/submit', upload.single('submission'), function(req, res) {
-	console.log("UPLOADING:    "+req.file.filename);
+	//console.log("UPLOADING:    "+req.file.filename);
 	if (req.fileValidationError != null) {																										//Vääränlainen tiedostotyyppi
 		//Ohjataan käyttäjä takaisin median lähetyssivulle
 		req.flash('error','Tiedoston tyyppi ei ollut oikeanlainen.\nSallitut tiedostotyypit: .png .jpg .jpeg .bmp .gif .webm .mp3 .mp4');
@@ -361,7 +363,7 @@ router.post('/submit', upload.single('submission'), function(req, res) {
 				console.log('Error in saving media: '+err);  
 				throw err;  
 			}
-			console.log('Media saving successful');    
+			//console.log('Media saving successful');    
 			//return done(null, newMedia);
 		});
 		//Ohjataan käyttäjä media sivulle onnistuneen lisäyksen jälkeen.
