@@ -1,12 +1,15 @@
+//CHAI
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../app');
 var should = chai.should();
 var expect = chai.expect();
-
+//For reading mockfiles
 var fs = require('fs');
-
+//For database
 var mongoose = require('mongoose');
+//Models
+var Media = require('../models/media.js');
 
 chai.use(chaiHttp);
 
@@ -36,12 +39,13 @@ describe('User', function() {
 		chai.request(server)
 		.post('/register')
 		.send({'username': 'Testi', 'password': 'testi', 'email': 'febju.system@gmail.com'})
-		.end(function(res){
+		.end(function(err, res){
 			done();
 		});
 	});
-
-	it('should offer feedback if user creation failed');
+	it('should not create user with incorrect email');	//Ei toteutettavissa atm
+	it('should not create user with duplicate email');
+	it('should not create user with duplicate username');
 });
 
 describe('Login', function() {
@@ -55,18 +59,17 @@ describe('Login', function() {
 		});
 	});
 	it('should allow correct logins', function(done){
-		var agent = chai.request.agent(server);
-		agent.post('/login')
+		//gettaa mediat agentilla --> login post --> tsekkaa redirect
+		chai.request(server)
+		.post('/login')
 		.send({'username': 'Testi', 'password': 'testi'})
-		.then(function(res){
-			agent.get('/user/login')
-				.then(function(res2){
-					//res2.should.redirect;
-					done();
-				});
+		.end(function(err, res){
+			res.should.have.cookie('sessionId');
+			done();
 		});
 	});
-	it('should disallow incorrect logins');
+	it('should disallow logins with false passwords');
+	it('should disallow logins to non-existing accounts');
 	it('should logout');
 });
 
@@ -80,15 +83,17 @@ describe('Password reset', function() {
 			done();
 		});
 	});
-	it('should offer password reset');
-	it('should allow correct access password resets');
-	it('should disallow correct access password resets');
+	it('should create tokens for existing accounts');
+	it('should not create tokens for non-existing accounts');
+	it('should allow access with correct tokens');
+	it('should disallow access with false tokens');
+	it('should disallow access if logged in');
 	it('should reset password as requested');
 });
 
 describe('Media submission', function() {
 	it('should show file submission page');
-	it('should allow new file submissions from registered users', function(done){
+	it('should allow new file submissions', function(done){
 		chai.request(server)
 		.post('/media/submit')
 		.field('name', 'nimi')
@@ -150,8 +155,29 @@ describe('Media index', function() {
 });
 
 describe('Media detail', function() {
-	it('should show single file');
-	it('should show information of the file');
+	it('should show single file', function(done) {
+		var detail = Media.findOne().exec();
+		detail.then(function(media){
+			chai.request(server)
+			.get('/media/?id='+media.file)
+			.end(function(err, res){
+				res.should.have.status(200);
+				res.should.be.html;
+				done();
+			});
+		})
+		.catch(function(err){
+			console.log('error', err);
+		});		
+	});
+	it('should not allow access to non-existing file', function(done) {
+		chai.request(server)
+		.get('/media/?id=test')
+		.end(function(err, res){
+			res.should.redirect;
+			done();
+		});
+	});
 	it('should allow zoom for images');
 	it('should allow movement to previous file');
 	it('should allow movement to next file');
