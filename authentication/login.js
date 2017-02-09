@@ -8,31 +8,29 @@ module.exports = function(passport){
 			passReqToCallback : true
 		},
         function(req, username, password, done) { 
-            // check in mongo if a user with username exists or not
+            //Tarkistetaan onko k‰ytt‰j‰‰ olemassa
             User.findOne({ 'username' :  username }, 
                 function(err, user) {
-                    // In case of any error, return using the done method
                     if (err)
                         return done(err);
-                    // Username does not exist, log the error and redirect back
+                    //K‰ytt‰j‰‰ ei ole olemassa
                     if (!user){
-                        console.log('User Not Found with username '+username);
+                        //console.log('User Not Found with username '+username);
                         return done(null, false, req.flash('error', 'K‰ytt‰j‰tili‰ ei ole olemassa.'));                 
                     }
-                    // User exists but wrong password, log the error 
+                    //K‰ytt‰j‰ lˆytyi, mutta salasana on v‰‰r‰
                     if (!isValidPassword(user, password)){
-                        console.log('Invalid Password');
-                        return done(null, false, req.flash('error', 'V‰‰r‰ salasana.')); // redirect back to login page
+                        //console.log('Invalid Password');
+                        return done(null, false, req.flash('error', 'V‰‰r‰ salasana.'));
                     }
-                    // User and password both match, return user from done method
-                    // which will be treated like success
+                    // K‰ytt‰j‰ lˆytyi ja salasana t‰sm‰‰
                     return done(null, user, req.flash('success', 'Sis‰‰nkirjautuminen onnistui.'));
                 }
             );
         }
     ));
 
-
+	//Verrataan annettua salasanaa talletettuun hashiin
     var isValidPassword = function(user, password){
         return bCrypt.compareSync(password, user.password);
     }
