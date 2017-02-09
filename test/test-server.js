@@ -40,8 +40,9 @@ describe('User', function() {
 			done();
 		});
 	});
-
-	it('should offer feedback if user creation failed');
+	it('should not create user with incorrect email');	//Ei toteutettavissa atm
+	it('should not create user with duplicate email');
+	it('should not create user with duplicate username');
 });
 
 describe('Login', function() {
@@ -66,7 +67,8 @@ describe('Login', function() {
 				});
 		});
 	});
-	it('should disallow incorrect logins');
+	it('should disallow logins with false passwords');
+	it('should disallow logins to non-existing accounts');
 	it('should logout');
 });
 
@@ -80,15 +82,17 @@ describe('Password reset', function() {
 			done();
 		});
 	});
-	it('should offer password reset');
-	it('should allow correct access password resets');
-	it('should disallow correct access password resets');
+	it('should create tokens for existing accounts');
+	it('should not create tokens for non-existing accounts');
+	it('should allow access with correct tokens');
+	it('should disallow access with false tokens');
+	it('should disallow access if logged in');
 	it('should reset password as requested');
 });
 
 describe('Media submission', function() {
 	it('should show file submission page');
-	it('should allow new file submissions from registered users', function(done){
+	it('should allow new file submissions', function(done){
 		chai.request(server)
 		.post('/media/submit')
 		.field('name', 'nimi')

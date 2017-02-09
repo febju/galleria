@@ -19,9 +19,8 @@ module.exports = function(passport){
 	/*
 	 *	/		GET
 	 *
-	 *
-	 *
-	 *
+	 *	Etusivu
+	 *	-Näyttää sivuston etusivun
 	 */
 	router.get('/', function(req, res) {
 		res.render('index', {
@@ -36,9 +35,8 @@ module.exports = function(passport){
 	/*
 	 *	/LOGIN/		GET
 	 *
-	 *
-	 *
-	 *
+	 *	Sisäänkirjautumissivu
+	 *	-Näyttää varsinaisen sisäänkirjautumissivun
 	 */
 	router.get('/login', function(req, res) {
 		res.render('user/login', {
@@ -52,13 +50,14 @@ module.exports = function(passport){
 	/*
 	 *	/LOGIN/		POST
 	 *
-	 *
-	 *
-	 *
+	 *	Sisäänkirjautuminen
+	 *	-Tarkastaan onko sisäänkirjautuminen hyväksytty
 	 */
 	router.post('/login', passport.authenticate('login', {
+		//Kirjautumisen onnistuessa käyttäjä ohjataan sille sivulle mistä on kirjauduttu, olettaen että kirjauduttiin navbar:in kautta
 		successRedirect: 'back',
 		successFlash : true,
+		//Epäonnistuessa käyttäjä ohjataan varsinaiselle kirjautumissivulle
 		failureRedirect: '/galleria/login',
 		failureFlash : true  
 	}));
@@ -68,13 +67,14 @@ module.exports = function(passport){
 	/*
 	 *	/REGISTER/		POST
 	 *
-	 *
-	 *
-	 *
+	 *	Rekisteröityminen
+	 *	-Luo uuden käyttäjän
 	 */
 	router.post('/register', passport.authenticate('signup', {
+		//Rekisteröinnin onnistuessa käyttä ohjataan etusivulle
 		successRedirect: '/galleria',
 		successFlash : true,
+		//Epäonnistuessa käyttäjä ohjataan takaisin rekisteröitymissivulle
 		failureRedirect: '/galleria/user/register',
 		failureFlash : true  
 	}));
@@ -84,12 +84,13 @@ module.exports = function(passport){
 	/*
 	 *	/LOGOUT/		GET
 	 *
-	 *
-	 *
-	 *
+	 *	Uloskirjautuminen
+	 *	-Kirjaa käyttäjän ulos ja ohjaa etusivulle
 	 */
 	router.get('/logout', function(req, res) {
+		//Kirjataan käyttäjä ulos
 		req.logout();
+		//Ohjaus etusivulle
 		res.redirect('/galleria');
 	});
 
