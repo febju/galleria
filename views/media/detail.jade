@@ -6,10 +6,19 @@ block content
 			h1 #{title}
 		div(class="panel panel-default col-md-12 col-xs-12")
 			div(class="image-container col-md-12 col-xs-12")
-				img(src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
-				div(class="modal")
-					img(class="modal-content" src="/galleria/uploads/#{file.filename}")
-					div(class="caption") #{file.name}
+				if (file.filetype == 'image')
+					img(src="/galleria/uploads/#{file.filename}" class="img-responsive thumbnail" alt="#{file.name}")
+					div(class="modal")
+						img(class="modal-content" src="/galleria/uploads/#{file.filename}")
+						div(class="caption") #{file.name}
+				if (file.filetype == 'video')
+					div(align="center" class="embed-responsive embed-responsive-16by9")
+						video(controls class="embed-responsive-item")
+							source(src="/galleria/uploads/#{file.filename}")
+				if (file.filetype == 'audio')
+					div(align="center")
+						audio(controls class="embed-responsive-item")
+							source(src="/galleria/uploads/#{file.filename}")
 			div(class="control-container  col-md-12 col-xs-12")
 				if (typeof prev != 'undefined')
 					a(class="btn btn-default left-neighbor" role="button" href="/galleria/media/?id=#{prev.file}")
