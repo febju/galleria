@@ -1,6 +1,5 @@
 //CHAI
 var chai = require('chai');
-var chaiHttp = require('chai-http');
 var server = require('../app');
 var should = chai.should();
 var expect = chai.expect();
@@ -11,7 +10,10 @@ var mongoose = require('mongoose');
 //Models
 var Media = require('../models/media.js');
 
-chai.use(chaiHttp);
+chai.use(require('chai-http'));
+
+var email1 = require('../public/redact/email1');
+var email2 = require('../public/redact/email2');
 
 describe('Frontpage', function() {
 	it('should show the frontpage', function(done){
@@ -36,16 +38,40 @@ describe('User', function() {
 		});
 	});
 	it('should create new user', function(done) {
-		chai.request(server)
+		var agent = chai.request.agent(server)
+		agent
 		.post('/register')
-		.send({'username': 'Testi', 'password': 'testi', 'email': 'febju.system@gmail.com'})
-		.end(function(err, res){
-			done();
+		.send({'username': 'Testi', 'password': 'testi', 'email': email1})
+		.then(function (res) {
+			return agent.get('/')
+			.then(function (res) {
+				res.should.have.status(200);
+				var login = (res.text).includes('<a class="login-name">Testi</a>');
+				if (login == true) done(); 
+			});
 		});
 	});
 	it('should not create user with incorrect email');	//Ei toteutettavissa atm
-	it('should not create user with duplicate email');
-	it('should not create user with duplicate username');
+	it('should not create user with duplicate email', function(done) {
+		chai.request(server)
+		.post('/register')
+		.send({'username': 'Test', 'password': 'testi', 'email': email1})
+		.end(function (err, res) {
+			res.should.have.status(200);
+			var login = (res.text).includes('<a class="login-name">Ei kirjautunut</a>');
+			if (login == true) done(); 
+		});
+	});
+	it('should not create user with duplicate username', function(done) {
+		chai.request(server)
+		.post('/register')
+		.send({'username': 'Testi', 'password': 'testi', 'email': email2})
+		.end(function (err, res) {
+			res.should.have.status(200);
+			var login = (res.text).includes('<a class="login-name">Ei kirjautunut</a>');
+			if (login == true) done(); 
+		});
+	});
 });
 
 describe('Login', function() {
@@ -59,13 +85,17 @@ describe('Login', function() {
 		});
 	});
 	it('should allow correct logins', function(done){
-		//gettaa mediat agentilla --> login post --> tsekkaa redirect
-		chai.request(server)
+		var agent = chai.request.agent(server)
+		agent
 		.post('/login')
 		.send({'username': 'Testi', 'password': 'testi'})
-		.end(function(err, res){
-			res.should.have.cookie('sessionId');
-			done();
+		.then(function (res) {
+			return agent.get('/')
+			.then(function (res) {
+				res.should.have.status(200);
+				var login = (res.text).includes('<a class="login-name">Testi</a>');
+				if (login == true) done(); 
+			});
 		});
 	});
 	it('should disallow logins with false passwords');
@@ -92,7 +122,15 @@ describe('Password reset', function() {
 });
 
 describe('Media submission', function() {
-	it('should show file submission page');
+	it('should show file submission page', function(done){
+		chai.request(server)
+		.get('/media/submit')
+		.end(function(err, res){
+			res.should.have.status(200);
+			res.should.be.html;
+			done();
+		});
+	});
 	it('should allow new file submissions', function(done){
 		chai.request(server)
 		.post('/media/submit')
@@ -179,6 +217,8 @@ describe('Media detail', function() {
 		});
 	});
 	it('should allow zoom for images');
+	it('should have video player for videos');
+	it('should have audio player for audio');
 	it('should allow movement to previous file');
 	it('should allow movement to next file');
 });
