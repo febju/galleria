@@ -181,7 +181,8 @@ describe('Media index', function() {
 			done();
 		});
 	});
-	it('should divide all files with pagination');
+	it('should show links to singular files');
+	it('should divide all files with pagination');		//Tarvitaan yli 20 tiedostoa
 	it('should not allow access to non-existing pages', function(done){
 		chai.request(server)
 		.get('/media/?page=99999')
@@ -226,6 +227,7 @@ describe('Media detail', function() {
 describe('Media search', function() {
 	it('should show the search options');
 	it('should show all search results');
+	it('should show links to singular files');
 	it('should divide all files with pagination');
 	it('should not allow access to non-existing pages');
 });
