@@ -241,7 +241,7 @@ router.route('/audio').get(function(req, res, next) {
  */
 router.get('/search', function(req, res) {
 	req.flash('error','Pyytämääsi mediasivua ei ole olemassa.');
-    res.redirect('../media');
+    res.redirect('/galleria/media');
 });
 
 

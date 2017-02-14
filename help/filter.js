@@ -11,9 +11,10 @@ module.exports = function(filetype,mediafiles,req){
 		if ((filetype.indexOf(mediafile.filetype) != -1) || filetype == mediafile.filetype) {
 			//Jos mediatyypit täsmäävät talletetaan tiedosto näytettävien tiedostojen listaan
 			filtered.push({
-				filename:mediafile.filename,
-				filetype: mediafile.filetype,
-				name:mediafile.name	
+				filename:mediafile.filename,		//tiedoston tallennusnimi tiedostopäätteellä
+				file:mediafile.file,				//tiedoston tallennusnimi, ilman tiedostopäätettä
+				filetype: mediafile.filetype,		//tiedoston mediatyyppi
+				name:mediafile.name,				//tiedoston nimi, jolla se on tallennettu
 			});
 		}
 	});
