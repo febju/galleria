@@ -90,17 +90,60 @@ describe('Login', function() {
 		.post('/login')
 		.send({'username': 'Testi', 'password': 'testi'})
 		.then(function (res) {
-			return agent.get('/')
+			res.should.have.status(200);
+			var login = (res.text).includes('<a class="login-name">Testi</a>');
+			if (login == true) done(); 
+		});
+	});
+	it('should disallow logins with false passwords', function(done){
+		var agent = chai.request.agent(server)
+		agent
+		.post('/login')
+		.send({'username': 'Testi', 'password': 'test'})
+		.then(function (res) {
+			return agent.get('/user/login')
 			.then(function (res) {
 				res.should.have.status(200);
-				var login = (res.text).includes('<a class="login-name">Testi</a>');
+				var login = (res.text).includes('<a class="login-name">Ei kirjautunut</a>');
 				if (login == true) done(); 
 			});
 		});
 	});
-	it('should disallow logins with false passwords');
-	it('should disallow logins to non-existing accounts');
-	it('should logout');
+	it('should disallow logins to non-existing accounts', function(done){
+		var agent = chai.request.agent(server)
+		agent
+		.post('/login')
+		.send({'username': 'Test', 'password': 'testi'})
+		.then(function (res) {
+			return agent.get('/user/login')
+			.then(function (res) {
+				res.should.have.status(200);
+				var login = (res.text).includes('<a class="login-name">Ei kirjautunut</a>');
+				if (login == true) done(); 
+			});
+		});
+	});
+	it('should logout', function(done){
+		var agent = chai.request.agent(server)
+		agent
+		.post('/login')
+		.send({'username': 'Testi', 'password': 'testi'})
+		.then(function (res) {
+			res.should.have.status(200);
+			var login = (res.text).includes('<a class="login-name">Testi</a>');
+			if (login == true) {
+				return agent.get('/logout')
+				.then(function (res) {
+					return agent.get('/user/login')
+					.then(function (res) {
+						res.should.have.status(200);
+						var login = (res.text).includes('<a class="login-name">Ei kirjautunut</a>');
+						if (login == true) done();
+					});
+				});
+			}
+		});
+	});
 });
 
 describe('Password reset', function() {
@@ -132,13 +175,15 @@ describe('Media submission', function() {
 		});
 	});
 	it('should allow new file submissions', function(done){
-		chai.request(server)
+		var agent = chai.request.agent(server)
+		agent
 		.post('/media/submit')
 		.field('name', 'nimi')
 		.field('description', 'kuvaus')
 		.attach('submission', fs.readFileSync('./test/test.png'), 'testi.png')
 		.end(function(err, res){
 			res.should.redirect;
+			res.should.have.status(200);
 			done();
 		});
 	});
